@@ -1,0 +1,19 @@
+/* line 7, ../sass/meetup.scss */
+slides > slide.title-slide hgroup [data-config-presenter] {
+  font-size: 18px;
+  line-height: 1.5;
+}
+/* line 11, ../sass/meetup.scss */
+slides > slide.title-slide hgroup p {
+  font-size: 15px;
+  margin-top: 2.5em;
+  text-align: right;
+}
+/* line 16, ../sass/meetup.scss */
+slides > slide.title-slide hgroup p:last-child {
+  margin-top: 5px !important;
+}
+/* line 23, ../sass/meetup.scss */
+slides > slide:not(.nobackground)::before {
+  content: "For professional clients / qualified investors only";
+}

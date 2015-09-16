@@ -1,0 +1,27 @@
+@import "variables";
+
+slides > slide {
+
+  &.title-slide {
+    hgroup {
+      [data-config-presenter] {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+      p {
+        font-size: 15px;
+        margin-top: 2.5em;
+        text-align: right;
+      }
+      p:last-child {
+        margin-top: 5px !important;
+      }
+    }
+  }
+  
+  &:not(.nobackground) {
+    &::before {
+      content: $social-tags;
+    }
+  }
+}
