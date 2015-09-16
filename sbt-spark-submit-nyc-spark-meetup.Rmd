@@ -2,8 +2,8 @@
 title: "sbt-spark-submit"
 subtitle: "Straight-through Build to Spark Analytics"
 output:
-  ioslides_presentation:
-  #bfmmarkdown::bfmslides_presentation:
+  #ioslides_presentation:
+  bfmmarkdown::bfmslides_presentation:
     #self_contained: false
     css: 
       - stylesheets/mermaid.forest.css
@@ -16,13 +16,20 @@ author:
 
 ## What People Think We Do {.centered}
 
-![](http://s.tf1.fr/mmdia/i/67/6/minorityreport2-scan-17-3938676dxwep.jpg?v=1)
+<img src="http://s.tf1.fr/mmdia/i/67/6/minorityreport2-scan-17-3938676dxwep.jpg?v=1" width="100%" />
+<footer class="source">https://99designs.com/designer-blog/2013/07/19/fantasy-user-interfaces/</footer>
 
 ## What We Really Do {.centered}
 
 ![](http://s.quickmeme.com/img/ac/ac49486fe031828370067a6988293e43bca97a15d08508e388f0a757a9700103.jpg)
+<footer class="source">http://www.quickmeme.com/p/3vovpz</footer>
 
-## Word Count? So Easy! {.smaller}
+## Word Count {.centered}
+
+<img src="http://xiaochongzhang.me/blog/wp-content/uploads/2013/05/MapReduce_Work_Structure.png" width="100%" />"
+<footer class="source">http://www.milanor.net/blog/?p=853</footer>
+
+## Word Count So Easy! {.smaller}
 
 ```java
 import java.io.BufferedReader;
@@ -48,8 +55,9 @@ import org.apache.hadoop.mapreduce.Counter;
 import org.apache.hadoop.util.GenericOptionsParser;
 import org.apache.hadoop.util.StringUtils;
 ```
+<footer class="source">http://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v2.0</footer>
 
-## Word Count? So Easy! {.smaller}
+## Word Count So Easy! {.smaller}
 
 ```java
 public class WordCount2 {
@@ -84,7 +92,7 @@ public class WordCount2 {
     }
 ```
 
-## Word Count? So Easy! {.smaller}
+## Word Count So Easy! {.smaller}
 
 ```java
 
@@ -137,7 +145,7 @@ public class WordCount2 {
   }
 ```
 
-## Word Count? So Easy! {.smaller}
+## Word Count So Easy! {.smaller}
 
 ```java
   public static void main(String[] args) throws Exception {
@@ -173,9 +181,14 @@ public class WordCount2 {
 }
 ```
 
-## Word Count? So Easy! {.centered}
+## Word Count So Easy! {.centered}
 
 <img src="https://brianadamspr.files.wordpress.com/2012/11/was-that-sarcasm.jpg" width="50%" />
+<footer class="source">http://knowledgespeakswisdomlistens.blogspot.com/2013/01/am-i-sheldon-cooper.html</footer>
+
+## We Do Big Data {.centered}
+
+<img src="http://cdn.meme.am/instances2/500x/1902975.jpg" width="60%" />
 
 ## Until Spark Came Along
 
@@ -187,9 +200,37 @@ val counts = textFile.flatMap(line => line.split(" "))
 counts.saveAsTextFile("hdfs://...")
 ```
 
-## Happy Spark! {.centered}
+### 
 
-![](http://img.memecdn.com/happy-no-cat_o_1052698.jpg)
+<div class="centered">
+  <img src="http://spark.apache.org/images/logistic-regression.png" height="250px" />
+  <img src="http://img.memecdn.com/happy-no-cat_o_1052698.jpg" height="250px" />
+</div>
+
+<footer class="source">http://www.dispuutcirce.nl/leden/img_2426/
+http://spark.apache.org/</footer>
+
+## Spark First World Problem {.centered}
+
+![](https://i.imgflip.com/r4xnp.jpg)
+
+## Submit Spark Application {.smaller}
+
+Create application JAR
+```
+sbt vis/assembly
+```
+
+Upload JAR to cluster
+```
+scp vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar my-awesome-spark-cluster:
+```
+
+<div class="centered">
+  <img src="http://geekshumor.com/wp-content/uploads/2013/06/My-codes-compiling.png" width="50%" />
+</div>
+
+<footer class="source">https://xkcd.com/303/</footer>
 
 ## Submit Spark Application {.smaller}
 
@@ -218,38 +259,6 @@ The *spark-submit* script in Spark’s bin directory is used to launch applicati
 
 <footer class="source">http://spark.apache.org/docs/latest/submitting-applications.html</footer>
 
-## Scala! {.centered}
-
-<img src="https://s-media-cache-ak0.pinimg.com/736x/7b/b7/06/7bb706cc6f2ac6e62c58b299acf3f362.jpg" width="50%" />
-
-## Scala! {.centered}
-
-<img src="http://i.imgur.com/ju1CgAo.jpg" width="50%" />
-
-## Submit Spark Application
-
-> - Create application JAR
-    ```
-    sbt vis/assembly
-    ```
-    Include all runtime dependencies
-> - Upload JAR to co-located cluster host
-    ```
-    scp vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar \
-      my-awesome-spark-cluster:
-    ```
-> - Execute *spark-submit*
-    ```
-    export HADOOP_CONF_DIR=<yarn-site.xml location>
-    $SPARK_HOME/bin/spark-submit --class my.DataVis --master yarn \
-      --num-executors 100 vis-assembly-x.y.z-SNAPSHOT.jar \
-      --input test_input --output test_output --test myMagicalTestingFeature
-    ```
-
-<div class="notes">
-The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.
-</div>
-
 ## Submit Spark Application
 
 ```{r, echo=FALSE}
@@ -270,10 +279,45 @@ sequenceDiagram
 ", width = "800", height = "500")
 ```
 
+<div class="notes">
+The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.
+</div>
+
+
+
+## Bash script rocks! {.smaller}
+
+```bash
+#!/bin/bash
+
+PROJECT_VER=SNAPSHOT
+PROJECT_ML_JAR=${PROJECT_DIR}/project-ml-assembly-${PROJECT_VER}.jar
+
+PREFIX=kmeans
+HBASE_KEYPREFIX=${PREFIX}_${SUFFIX}
+HBASE_CLASSPATH=/etc/hbase/conf:/usr/lib/hbase/lib/hbase-client.jar:/usr/lib/hbase/lib/hbase-common.jar:/usr/lib/hbase/lib/hbase-examples.jar:/usr/lib/hbase/lib/hbase-hadoop2-compat.jar:/usr/lib/hbase/lib/hbase-hadoop-compat.jar:/usr/lib/hbase/lib/hbase-it.jar:/usr/lib/hbase/lib/hbase-prefix-tree.jar:/usr/lib/hbase/lib/hbase-protocol.jar:/usr/lib/hbase/lib/hbase-server.jar:/usr/lib/hbase/lib/hbase-shell.jar:/usr/lib/hbase/lib/hbase-testing-util.jar:/usr/lib/hbase/lib/hbase-thrift.jar:/usr/lib/hbase/lib/htrace-core-2.04.jar
+
+OUTPUT_HDFS_DIR=${PREFIX}/${SUFFIX}
+
+time \
+    spark-submit \
+    --master yarn-cluster \
+    --num-executors 1000 \
+    --class com.bfm.amps.KMClustering \
+    --driver-class-path ${HBASE_CLASSPATH} \
+    --driver-memory=3g --executor-memory=3g \
+    --conf="spark.executor.extraClassPath=${HBASE_CLASSPATH}" \
+    --conf="spark.yarn.jar=hdfs:///proj/share/spark/spark-assembly-1.5.0-hadoop2.6.0.jar" \
+    ${PROJECT_ML_JAR} \
+    -output=${OUTPUT_HDFS_DIR} -input=my_awesome_big_dataset \
+    -k=10 -partitions=10 -runs=10 \
+    -hbase=${HBASE_KEYPREFIX}
+```
 
 ## Bash script rocks! {.centered}
 
 ![](http://cdn.meme.am/instances/64064889.jpg)
+<footer class="source">http://memegenerator.net/instance/37544999</footer>
 
 ## Bash script rocks?
 
@@ -284,10 +328,12 @@ sequenceDiagram
 <div class="centered">
   ![](http://images-cdn.moviepilot.com/image/upload/c_fill,h_281,t_mp_quality,w_500/-2a86a3c7-9206-41b1-9f39-558bbe914d27.gif)
 </div>
+<footer class="source">http://animatedmeme.blogspot.com/2013/06/peter-griffin-vs-blinds.html</footer>
 
-## Scala!
+## Scala! {.centered}
 
 ![](http://cdn.meme.am/instances/58038541.jpg)
+<footer class="source">http://memegenerator.net/instance/58038541</footer>
 
 # *sbt-spark-submit* Plugin to Rescue | Demo: SparkPi Submission for Local and YARN
 
@@ -316,6 +362,17 @@ works with multiple main classes
 > - Continous compilation/testing
 > - Concise and powerful configuration
 > - Built-in auto-complete
+> - IDE highlights compile time exception
+
+## Scala! {.centered}
+
+<img src="https://s-media-cache-ak0.pinimg.com/736x/7b/b7/06/7bb706cc6f2ac6e62c58b299acf3f362.jpg" width="50%" />
+<footer class="source">http://www.iamprogrammer.net/</footer>
+
+## Scala! {.centered}
+
+<img src="http://i.imgur.com/ju1CgAo.jpg" width="50%" />
+<footer class="source">http://imgur.com/r/programmingmemes/ju1CgAo</footer>
 
 # Cats Don't Like Dogs | Demo: A Multi-project Build
 
@@ -352,17 +409,19 @@ Now we have all the Java and Scala libraries at our disposable to create our bui
 
 ## Thank you {.smaller}
 
-### Slides and code
+Slides and code
 
 https://github.com/saurfang/nyc-spark-meetup
 
-### *sbt-spark-submit*
+*sbt-spark-submit*
 
 https://github.com/saurfang/sbt-spark-submit
 
 <div class="centered">
   ![](http://www.blankchapters.com/wp-content/uploads/2012/12/meme-data-data-everywhere.png)
 </div>
+
+<footer class="source">http://www.blankchapters.com/2012/12/22/big-data-is-not-always-the-solution-to-all-our-problems</footer>
 
 # Appendix
 
@@ -383,10 +442,6 @@ Spark applications run as independent sets of processes on a cluster, coordinate
 Driver Program -> Communicate with Cluster Manager to request resources. Broadcast JAR and common files to executors. Sends serialized tasks to executors to run.
 Executors -> Listen to Driver for tasks to process and respond with status. Inter-executor communication to exchange shuffled/broadcasted data.
 </div>
-
-## The Role of Developer {.centered}
-
-![](http://geekshumor.com/wp-content/uploads/2013/06/My-codes-compiling.png)
 
 ## Client Deployment Mode {.centered}
 

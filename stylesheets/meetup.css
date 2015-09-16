@@ -17,8 +17,3 @@ slides > slide.title-slide hgroup p:last-child {
 slides > slide:not(.nobackground)::before {
   content: "";
 }
-
-img[alt="fillpic"] { 
-  width:  100%; 
-  display: block;
-}
