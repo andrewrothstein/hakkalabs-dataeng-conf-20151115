@@ -15,5 +15,10 @@ slides > slide.title-slide hgroup p:last-child {
 }
 /* line 23, ../sass/meetup.scss */
 slides > slide:not(.nobackground)::before {
-  content: "For professional clients / qualified investors only";
+  content: "";
+}
+
+img[alt="fillpic"] { 
+  width:  100%; 
+  display: block;
 }

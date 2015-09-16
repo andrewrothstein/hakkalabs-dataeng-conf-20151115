@@ -2,8 +2,8 @@
 title: "sbt-spark-submit"
 subtitle: "Straight-through Build to Spark Analytics"
 output:
-  #ioslides_presentation:
-  bfmmarkdown::bfmslides_presentation:
+  ioslides_presentation:
+  #bfmmarkdown::bfmslides_presentation:
     #self_contained: false
     css: 
       - stylesheets/mermaid.forest.css
@@ -14,42 +14,184 @@ author:
   - name: "Forest Fang<br> Financial Modeling Group - Advanced Data Analytics"
 ---
 
-## Agenda
+## What People Think We Do {.centered}
 
-> - Spark deployment architecture
-> - Development workflow and challenges
-> - Introduction to *sbt-spark-submit*
-> - What is *sbt*?
-> - Continous develop and deploy to *AWS EC2*
+![](http://s.tf1.fr/mmdia/i/67/6/minorityreport2-scan-17-3938676dxwep.jpg?v=1)
 
-<div class="notes">
-- Application Driver Program and Executors
-- The role of developer and challenge it introduces
-- sbt plugin that achieves straight-through build, upload, spark-submit
-with accessible configuration
-- incremental build, multi-project routing, extensible, deduplicate
-- example to extend sbt-spark-submit to add additional deployment steps
-</div>
+## What We Really Do {.centered}
 
-## Spark Cluster Mode Overview
+![](http://s.quickmeme.com/img/ac/ac49486fe031828370067a6988293e43bca97a15d08508e388f0a757a9700103.jpg)
 
-> - Driver Program
-> - Executors (worker, slave, container)
+## Word Count? So Easy! {.smaller}
 
-<div class="centered">
-  ![](http://spark.apache.org/docs/latest/img/cluster-overview.png)
-</div>
+```java
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
 
-<footer class="source">http://spark.apache.org/docs/latest/cluster-overview.html</footer>
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.Counter;
+import org.apache.hadoop.util.GenericOptionsParser;
+import org.apache.hadoop.util.StringUtils;
+```
 
-<div class="notes">
-Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
+## Word Count? So Easy! {.smaller}
 
-Driver Program -> Communicate with Cluster Manager to request resources. Broadcast JAR and common files to executors. Sends serialized tasks to executors to run.
-Executors -> Listen to Driver for tasks to process and respond with status. Inter-executor communication to exchange shuffled/broadcasted data.
-</div>
+```java
+public class WordCount2 {
 
-## The Role of User {.smaller}
+  public static class TokenizerMapper
+       extends Mapper<Object, Text, Text, IntWritable>{
+
+    static enum CountersEnum { INPUT_WORDS }
+
+    private final static IntWritable one = new IntWritable(1);
+    private Text word = new Text();
+
+    private boolean caseSensitive;
+    private Set<String> patternsToSkip = new HashSet<String>();
+
+    private Configuration conf;
+    private BufferedReader fis;
+
+    @Override
+    public void setup(Context context) throws IOException,
+        InterruptedException {
+      conf = context.getConfiguration();
+      caseSensitive = conf.getBoolean("wordcount.case.sensitive", true);
+      if (conf.getBoolean("wordcount.skip.patterns", true)) {
+        URI[] patternsURIs = Job.getInstance(conf).getCacheFiles();
+        for (URI patternsURI : patternsURIs) {
+          Path patternsPath = new Path(patternsURI.getPath());
+          String patternsFileName = patternsPath.getName().toString();
+          parseSkipFile(patternsFileName);
+        }
+      }
+    }
+```
+
+## Word Count? So Easy! {.smaller}
+
+```java
+
+    private void parseSkipFile(String fileName) {
+      try {
+        fis = new BufferedReader(new FileReader(fileName));
+        String pattern = null;
+        while ((pattern = fis.readLine()) != null) {
+          patternsToSkip.add(pattern);
+        }
+      } catch (IOException ioe) {
+        System.err.println("Caught exception while parsing the cached file '"
+            + StringUtils.stringifyException(ioe));
+      }
+    }
+
+    @Override
+    public void map(Object key, Text value, Context context
+                    ) throws IOException, InterruptedException {
+      String line = (caseSensitive) ?
+          value.toString() : value.toString().toLowerCase();
+      for (String pattern : patternsToSkip) {
+        line = line.replaceAll(pattern, "");
+      }
+      StringTokenizer itr = new StringTokenizer(line);
+      while (itr.hasMoreTokens()) {
+        word.set(itr.nextToken());
+        context.write(word, one);
+        Counter counter = context.getCounter(CountersEnum.class.getName(),
+            CountersEnum.INPUT_WORDS.toString());
+        counter.increment(1);
+      }
+    }
+  }
+
+  public static class IntSumReducer
+       extends Reducer<Text,IntWritable,Text,IntWritable> {
+    private IntWritable result = new IntWritable();
+
+    public void reduce(Text key, Iterable<IntWritable> values,
+                       Context context
+                       ) throws IOException, InterruptedException {
+      int sum = 0;
+      for (IntWritable val : values) {
+        sum += val.get();
+      }
+      result.set(sum);
+      context.write(key, result);
+    }
+  }
+```
+
+## Word Count? So Easy! {.smaller}
+
+```java
+  public static void main(String[] args) throws Exception {
+    Configuration conf = new Configuration();
+    GenericOptionsParser optionParser = new GenericOptionsParser(conf, args);
+    String[] remainingArgs = optionParser.getRemainingArgs();
+    if (!(remainingArgs.length != 2 | | remainingArgs.length != 4)) {
+      System.err.println("Usage: wordcount <in> <out> [-skip skipPatternFile]");
+      System.exit(2);
+    }
+    Job job = Job.getInstance(conf, "word count");
+    job.setJarByClass(WordCount2.class);
+    job.setMapperClass(TokenizerMapper.class);
+    job.setCombinerClass(IntSumReducer.class);
+    job.setReducerClass(IntSumReducer.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
+
+    List<String> otherArgs = new ArrayList<String>();
+    for (int i=0; i < remainingArgs.length; ++i) {
+      if ("-skip".equals(remainingArgs[i])) {
+        job.addCacheFile(new Path(remainingArgs[++i]).toUri());
+        job.getConfiguration().setBoolean("wordcount.skip.patterns", true);
+      } else {
+        otherArgs.add(remainingArgs[i]);
+      }
+    }
+    FileInputFormat.addInputPath(job, new Path(otherArgs.get(0)));
+    FileOutputFormat.setOutputPath(job, new Path(otherArgs.get(1)));
+
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+  }
+}
+```
+
+## Word Count? So Easy! {.centered}
+
+<img src="https://brianadamspr.files.wordpress.com/2012/11/was-that-sarcasm.jpg" width="50%" />
+
+## Until Spark Came Along
+
+```scala
+val textFile = spark.textFile("hdfs://...")
+val counts = textFile.flatMap(line => line.split(" "))
+                 .map(word => (word, 1))
+                 .reduceByKey(_ + _)
+counts.saveAsTextFile("hdfs://...")
+```
+
+## Happy Spark! {.centered}
+
+![](http://img.memecdn.com/happy-no-cat_o_1052698.jpg)
+
+## Submit Spark Application {.smaller}
 
 The *spark-submit* script in Spark’s bin directory is used to launch applications on a cluster.
 
@@ -76,8 +218,15 @@ The *spark-submit* script in Spark’s bin directory is used to launch applicati
 
 <footer class="source">http://spark.apache.org/docs/latest/submitting-applications.html</footer>
 
+## Scala! {.centered}
 
-## The Role of Developer
+<img src="https://s-media-cache-ak0.pinimg.com/736x/7b/b7/06/7bb706cc6f2ac6e62c58b299acf3f362.jpg" width="50%" />
+
+## Scala! {.centered}
+
+<img src="http://i.imgur.com/ju1CgAo.jpg" width="50%" />
+
+## Submit Spark Application
 
 > - Create application JAR
     ```
@@ -101,63 +250,7 @@ The *spark-submit* script in Spark’s bin directory is used to launch applicati
 The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.
 </div>
 
-## The Role of Developer {.centered}
-
-![](http://geekshumor.com/wp-content/uploads/2013/06/My-codes-compiling.png)
-
-## Client Deployment Mode {.centered}
-
-![](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/images/spark-yarn-client.png)
-
-<footer class="source">http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_running_spark_on_yarn.html</footer>
-
-
-<div class="notes">
-Client mode runs the Driver Program in the same JVM as *spark-submit*. This has the benefit that logs are shown on the same console. However since Driver Program constantly communicates with Executors, it's often required to run it on a co-located cluster host.
-The reality is that Developer often doesn't develops in the same data center as the Hadoop cluster. Wouldn't it be nice if we can submit to a remote cluster right here from our development environment? This is where cluster deployment mode comes in!
-</div>
-
-
-## Cluster Deployment Mode {.centered}
-
-<div class="centered">
-  ![](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/images/spark-yarn-cluster.png)
-</div>
-
-<footer class="source">http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_running_spark_on_yarn.html</footer>
-
-
-<div class="notes">
-Cluster mode runs the Driver Program in a container JVM. For the case of YARN, it runs in the same container where Application Master lives. This ensures driver and executers can communicate with low latency.
-
-While logs now can only be retrieved as application logs in YARN, this has the added benefits that logs are automatically archived.
-
-Let's see how this simplifies things!
-</div>
-
-## The Role of Developer (Cluster Mode)
-
-> - Create application JAR
-    ```
-    sbt vis/assembly
-    ```
-    Include all runtime dependencies
-> - Execute *spark-submit*
-    ```
-    export HADOOP_CONF_DIR=<yarn-site.xml location>
-    $SPARK_HOME/bin/spark-submit --class my.DataVis \
-      --master yarn-cluster --num-executors 100 \
-      vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar \
-      --input test_input --output test_output --test myMagicalTestingFeature
-    ```
-> - Developer has to set up `$SPARK_HOME` with correct version. Not perfectly repeatable
-
-
-<div class="notes">
-We are happy to see we eliminated one step! However now developer is required to setup the SPARK distribution on their dev machine. It's not like we need an extra step for scare new developer away and not too mention this can be a bit brittle when you bump Spark version.
-</div>
-
-## The Role of Developer
+## Submit Spark Application
 
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
@@ -177,18 +270,6 @@ sequenceDiagram
 ", width = "800", height = "500")
 ```
 
-## Spark Development Challenges
-
-> - Multiple non-instantaneous steps
-    - Build, Upload, Submit
-> - Multiple main classes
-    - Exploratory Analysis, Model Training, Model Evaluation
-> - Multiple projects
-    - Batch ETL, ML, Streaming
-> - Multiple configurations
-    - Different Datasets
-> - Multiple deployment locations
-    - local, yarn, EC2
 
 ## Bash script rocks! {.centered}
 
@@ -204,6 +285,9 @@ sequenceDiagram
   ![](http://images-cdn.moviepilot.com/image/upload/c_fill,h_281,t_mp_quality,w_500/-2a86a3c7-9206-41b1-9f39-558bbe914d27.gif)
 </div>
 
+## Scala!
+
+![](http://cdn.meme.am/instances/58038541.jpg)
 
 # *sbt-spark-submit* Plugin to Rescue | Demo: SparkPi Submission for Local and YARN
 
@@ -266,7 +350,7 @@ Now we have all the Java and Scala libraries at our disposable to create our bui
 > - Integrate well for multi-project
 > - Extensible
 
-## Thank you
+## Thank you {.smaller}
 
 ### Slides and code
 
@@ -276,3 +360,82 @@ https://github.com/saurfang/nyc-spark-meetup
 
 https://github.com/saurfang/sbt-spark-submit
 
+<div class="centered">
+  ![](http://www.blankchapters.com/wp-content/uploads/2012/12/meme-data-data-everywhere.png)
+</div>
+
+# Appendix
+
+## Spark Cluster Mode Overview
+
+> - Driver Program
+> - Executors (worker, slave, container)
+
+<div class="centered">
+  ![](http://spark.apache.org/docs/latest/img/cluster-overview.png)
+</div>
+
+<footer class="source">http://spark.apache.org/docs/latest/cluster-overview.html</footer>
+
+<div class="notes">
+Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
+
+Driver Program -> Communicate with Cluster Manager to request resources. Broadcast JAR and common files to executors. Sends serialized tasks to executors to run.
+Executors -> Listen to Driver for tasks to process and respond with status. Inter-executor communication to exchange shuffled/broadcasted data.
+</div>
+
+## The Role of Developer {.centered}
+
+![](http://geekshumor.com/wp-content/uploads/2013/06/My-codes-compiling.png)
+
+## Client Deployment Mode {.centered}
+
+![](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/images/spark-yarn-client.png)
+
+<footer class="source">http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_running_spark_on_yarn.html</footer>
+
+
+<div class="notes">
+Client mode runs the Driver Program in the same JVM as *spark-submit*. This has the benefit that logs are shown on the same console. However since Driver Program constantly communicates with Executors, it's often required to run it on a co-located cluster host.
+The reality is that Developer often doesn't develops in the same data center as the Hadoop cluster. Wouldn't it be nice if we can submit to a remote cluster right here from our development environment? This is where cluster deployment mode comes in!
+</div>
+
+
+## Cluster Deployment Mode {.centered}
+
+<div class="centered">
+  ![](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/images/spark-yarn-cluster.png)
+</div>
+
+<footer class="source">http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_running_spark_on_yarn.html</footer>
+
+
+<div class="notes">
+Cluster mode runs the Driver Program in a container JVM. For the case of YARN, it runs in the same container where Application Master lives. This ensures driver and executers can communicate with low latency.
+
+While logs now can only be retrieved as application logs in YARN, this has the added benefits that logs are automatically archived.
+
+Let's see how this simplifies things!
+</div>
+
+## The Role of Developer (Cluster Mode)
+
+> - Create application JAR
+    ```
+    sbt vis/assembly
+    ```
+    Include all runtime dependencies
+> - Execute *spark-submit*
+    ```
+    export HADOOP_CONF_DIR=<yarn-site.xml location>
+    $SPARK_HOME/bin/spark-submit --class my.DataVis \
+      --master yarn-cluster --num-executors 100 \
+      vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar \
+      --input test_input --output test_output --test myMagicalTestingFeature
+    ```
+> - Developer has to set up `$SPARK_HOME` with correct version. Not perfectly repeatable
+
+
+<div class="notes">
+We are happy to see we eliminated one step! However now developer is required to setup the SPARK distribution on their dev machine. It's not like we need an extra step for scare new developer away and not too mention this can be a bit brittle when you bump Spark version.
+</div>
