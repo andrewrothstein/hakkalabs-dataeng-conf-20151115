@@ -330,6 +330,19 @@ time \
 </div>
 <footer class="source">http://animatedmeme.blogspot.com/2013/06/peter-griffin-vs-blinds.html</footer>
 
+## Spark Development Challenges
+
+> - Multiple non-instantaneous steps
+    - Build, Upload, Submit
+> - Multiple main classes
+    - Exploratory Analysis, Model Training, Model Evaluation
+> - Multiple projects
+    - Batch ETL, ML, Streaming
+> - Multiple configurations
+    - Different Datasets
+> - Multiple deployment locations
+    - local, yarn, EC2
+
 ## Scala! {.centered}
 
 ![](http://cdn.meme.am/instances/58038541.jpg)
