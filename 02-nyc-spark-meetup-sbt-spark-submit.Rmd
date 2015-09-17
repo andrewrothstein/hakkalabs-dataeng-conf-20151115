@@ -313,13 +313,13 @@ time \
 > - Multiple non-instantaneous steps
     - Build, Upload, Submit
 > - Multiple main classes
-    - Exploratory Analysis, Model Training, Model Evaluation and etc
+    - Exploratory Analysis, Model Training, Model Evaluation, et. al.
 > - Multiple projects
-    - Core, Batch ETL, ML, Streaming, Visualization and etc
+    - Core, Batch ETL, ML, Streaming, Visualization, et. al.
 > - Multiple configurations
     - Different Datasets, Parameters and etc
 > - Multiple deployment locations
-    - local, yarn, EC2 and etc
+    - local, yarn, EC2, et. al.
 
 ## Scala! {.centered}
 
