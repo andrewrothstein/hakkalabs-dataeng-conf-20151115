@@ -43,12 +43,8 @@ author:
 
 ## Why Scala?
 * Functional programming allows for succinct expression of complex data processing tasks in composable ways
-* The type inferencing system allos for a type-safe scripting-like coding experience
+* The type inferencing system allows for a type-safe scripting-like coding experience
 * Spark Scala programs incur limited syntactic ceremony whilst delivering concurrency and parallelism
-
-## Why Akka?
-* Building scalable, composable, concurrent, parallel processing systems is _really hard_ to do correctly
-* Message passing + the Actors model of concurrent computation does a great job at hiding muc of that complexity
 
 ## Why Spark?
 * Spark helps us manage complexity and do so scalably
