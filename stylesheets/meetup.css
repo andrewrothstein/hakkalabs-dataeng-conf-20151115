@@ -17,3 +17,11 @@ slides > slide.title-slide hgroup p:last-child {
 slides > slide:not(.nobackground)::before {
   content: "";
 }
+
+.columns-3 {
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  -ms-column-count: 3;
+  -o-column-count: 3;
+  column-count: 3;
+}
