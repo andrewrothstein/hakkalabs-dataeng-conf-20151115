@@ -71,7 +71,76 @@ B[Data On Cluster]-->A[On Cluster]
 
 ## Our Implementation - DaVinci {.centered}
 
-<img src="images/3/davinci.jpg" width="100%" />
+<img src="images/3/davinci.png" width="100%" />
+
+## Our Implementation - Scatterplot Matrix {.centered}
+
+<img src="images/3/scatterplot.png" width="70%" />
+
+## What Is Spark Job Server?
+
+“[A] RESTful interface for submitting and managing Apache Spark jobs, jars, and job contexts” (https://github.com/spark-jobserver/spark-jobserver)
+<br><br>
+<ol>
+<li>Create a JAR with an object implementing the SparkJob trait
+  <ul>
+    sbt ajaxJob/assembly
+  </ul>
+</li>
+<li>Upload to Spark Job Server
+  <ul>
+    curl --data-binary @ajaxJob.jar jobserver.com:8090/jars/ajaxJob
+  </ul>
+<li>Call It With AJAX
+  <ul>
+    curl --d “input.params = param1 …”
+    jobserver.com:8090/jobs?appName=ajaxJob?classPath=path.to.object
+  </ul>
+</ol>
+
+## Where Does Spark Job Server Fit?
+
+<div class="columns-2">
+  <h2>Internally</h2>
+  <br><br>
+  HTML5 Application
+  <br><br>
+  Spark Job Server
+  <br><br>
+  YARN
+  <br><br>
+  Private Cluster
+  <br><br>
+  <div style="float:right">
+  <h2>Externally</h2>
+  <br><br>
+  HTML5 Application
+  <br><br>
+  Spark Job Server
+  <br><br>
+  Standalone Cluster
+  <br><br>
+  EC2
+  </div>
+</div>
+
+## Try Our External Version
+
+<ol>
+<li>Clone the repo at https://github.com/David-Durst/spark-jobserver</li>
+<li>Run bin/ec2_deploy_and_kmeans.sh</li>
+<li>Open the scatterplot matrix in the web browser and enter the URL printed by the script</li>
+</ol>
+
+## Create Your Own Internal Version
+
+<ol>
+<li>Clone the repo at https://github.com/David-Durst/spark-jobserver</li>
+<li>Copy config/local.sh.template to config/internal.sh and modify to fit your environment</li>
+<li>Copy config/local.conf.template to config/internal.conf and modify to fit your environment</li>
+<li>Run bin/server_deploy.sh internal</li>
+</ol>
+
 
 ## We Do Big Data {.centered}
 
