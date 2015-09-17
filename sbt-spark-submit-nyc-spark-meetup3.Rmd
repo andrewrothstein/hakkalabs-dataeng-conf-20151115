@@ -71,8 +71,8 @@ D-- >C
 ## What's The Dream? - Actionable Information
 A model that:
 
-1. Takes in raw data
-2. AUTOMATICALLY produces NUMERICAL and VISUAL analyses that NON-TECHNICAL individuals can use to make decisions
+1. Consumes raw market/indicative data
+2. **Automatically** produces **numerical** and **visual** analyses that **business users** can leverage to make decisions
 
 ## What Are We Discussing Today? {.centered}
 <!--- Code for generating this image
