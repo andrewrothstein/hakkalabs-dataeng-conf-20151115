@@ -20,14 +20,16 @@ author:
 <footer class="source">Source: http://api.ning.com/files/tRHkwQN7s-Xz5cxylXG004GLGJdjoPd6bVfVBwvgu*F5MwDDUCiHHdmBW-JTEz0cfJjGurJucBMTkIUNdL3jcZT8IPfNWfN9/dv1.jpg</footer>
 
 ## What's The Goal? {.centered}
-
+<!---
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Understanding The Past]-->B[Interpreting The Present]
-B[Interpreting The Present]-->C[Predicting The Future]
+A[Understanding The Past]-- >B[Interpreting The Present]
+B[Interpreting The Present]-- >C[Predicting The Future]
 ", width = "800", height = "500")
 ```
+-->
+<img style="margin-top:20px" src="images/3/goal.png" />
 
 ## What's The Dream? {.centered}
 The Optimal Implementation Of The Goal
@@ -64,13 +66,13 @@ D-- >C
 ", width = "800", height = "500")
 ```
 -->
-<img style="margin-top:10px" src="images/3/modeling.png" />
+<img style="margin-left:50px;margin-top:10px" src="images/3/modeling.png" />
 
 ## What's The Dream? - Actionable Information
 A model that:
 
-1. Takes in raw data
-2. AUTOMATICALLY produces NUMERICAL and VISUAL analyses that NON-TECHNICAL individuals can use to make decisions
+1. Consumes raw market/indictive data
+2. **Automatically** produces **numerical** and **visual** analyses that **business users** can leverage to make decisions
 
 ## What Are We Discussing Today? {.centered}
 <!--- Code for generating this image

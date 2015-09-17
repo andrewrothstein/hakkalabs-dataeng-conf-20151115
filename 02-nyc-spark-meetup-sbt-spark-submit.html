@@ -354,7 +354,7 @@ Source: <a href='https://xkcd.com/303/' title=''>https://xkcd.com/303/</a>
 
 </article></slide><slide class=''><hgroup><h2>Submit Spark Application</h2></hgroup><article  id="submit-spark-application-1" class="smaller">
 
-<p>The <em>spark-submit</em> script in Spark’s bin directory is used to launch applications on a cluster.</p>
+<p>The <em>spark-submit</em> script in Spark&#39;s bin directory is used to launch applications on a cluster.</p>
 
 <pre class = 'prettyprint lang-bash'># Run application locally on 8 cores
 $SPARK_HOME/bin/spark-submit \
@@ -604,8 +604,8 @@ Driver Program -&gt; Communicate with Cluster Manager to request resources. Broa
 
 </article></slide><slide class=''><hgroup><h2>Submit Spark Application</h2></hgroup><article  id="submit-spark-application-2">
 
-<p><div id="htmlwidget-3142" style="width:800px;height:500px;" class="DiagrammeR"></div>
-<script type="application/json" data-for="htmlwidget-3142">{"x":{"diagram":"\nsequenceDiagram\n  developer->>sbt: create assembly jar\n  sbt->>developer: done packaging\n  alt client mode\n    developer->>cluster host: scp jar\n    cluster host->>developer: done\n    developer->>cluster host: spark-submit\n    cluster host->>cluster manager: submit job synchronously\n    cluster manager->>developer: done\n  else cluster mode\n    developer->>cluster manager: spark-submit asynchronously\n    cluster manager->>developer: submitted and running\n  end\n"},"evals":[]}</script></p>
+<p><div id="htmlwidget-1379" style="width:800px;height:500px;" class="DiagrammeR"></div>
+<script type="application/json" data-for="htmlwidget-1379">{"x":{"diagram":"\nsequenceDiagram\n  developer->>sbt: create assembly jar\n  sbt->>developer: done packaging\n  alt client mode\n    developer->>cluster host: scp jar\n    cluster host->>developer: done\n    developer->>cluster host: spark-submit\n    cluster host->>cluster manager: submit job synchronously\n    cluster manager->>developer: done\n  else cluster mode\n    developer->>cluster manager: spark-submit asynchronously\n    cluster manager->>developer: submitted and running\n  end\n"},"evals":[]}</script></p>
 
 <aside class='note'><section>The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.</section></aside>
 

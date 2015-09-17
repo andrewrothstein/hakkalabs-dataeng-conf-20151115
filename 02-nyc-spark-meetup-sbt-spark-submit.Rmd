@@ -237,7 +237,7 @@ scp vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar my-awesome-spark-clust
 
 ## Submit Spark Application {.smaller}
 
-The *spark-submit* script in Spark’s bin directory is used to launch applications on a cluster.
+The *spark-submit* script in Spark's bin directory is used to launch applications on a cluster.
 
 ```bash
 # Run application locally on 8 cores

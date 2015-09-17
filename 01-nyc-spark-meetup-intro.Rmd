@@ -20,8 +20,8 @@ author:
     + Retail - financial advisors, retirees, savers/you
     + Solutions - advisory, Aladdin, et. al.
     
-<footer class="source">https://www.blackrock.com/corporate/en-se/about-us/mission-and-principles</footer>
-<footer class="source">https://en.wikipedia.org/wiki/Financial_market_participants</footer>
+<footer class="source">https://www.blackrock.com/corporate/en-se/about-us/mission-and-principles
+<br>https://en.wikipedia.org/wiki/Financial_market_participants</footer>
 
 ## How?
 * Aladdin - Software enabled business processes for responsibly operating as an asset manager delivered as service
