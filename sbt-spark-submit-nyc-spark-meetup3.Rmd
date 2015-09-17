@@ -40,25 +40,52 @@ The Optimal Implementation Of The Goal
 </div>
 
 
-## What's The Dream? - Understanding The Past {.centered}
+## What's The Dream? - Processing {.centered}
+<!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Raw Data]-->B[Data On Cluster]
-B[Data On Cluster]-->C[On Cluster]
+A[Raw Data]-- >B[Data On Cluster]
+B[Data On Cluster]-- >C[Features On Cluster]
 ", width = "800", height = "500")
 ```
+-->
+<img style="margin-top:10px" src="images/3/processing.png" />
 
-## What's The Dream? - Understanding The Past {.centered}
+## What's The Dream? - Modeling {.centered}
+<!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Extract Features On Cluster]-->B[Understand Features]
-B[Data On Cluster]-->A[On Cluster]
+A[Features On Cluster]-- >B[Understand Features]
+B[Understand Features]-- >C[Model]
+C[Model]-- >D[Numerically and Visually Evaluate Model]
+D-- >C
 ", width = "800", height = "500")
 ```
+-->
+<img style="margin-top:10px" src="images/3/modeling.png" />
 
-## What's The Dream? - Predicting The Future {.centered}
+## What's The Dream? - Actionable Information {.centered}
+
+## What Are We Discussing Today? {.centered}
+<!--- Code for generating this image
+```{r, echo=FALSE}
+DiagrammeR::mermaid("
+graph TB
+A[Features On Cluster]-- >B[Understand Features]
+B[Understand Features]-- >C[Model]
+C[Model]-- >D[Numerically and Visually Evaluate Model]
+D-- >C
+
+style B stroke:#FF0000, stroke-width: 3, 
+style C stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
+style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
+
+", width = "800", height = "500")
+```
+-->
+<img style="margin-top:10px" src="images/3/today.png" />
 
 ## I Big Data. Can You? {.centered}
 
