@@ -36,7 +36,7 @@ The Optimal Implementation Of The Goal
 <div style="margin:20px 0px 0px 0px" class="columns-3">
   <img src="images/3/spark.png"/>
   <img style="float:right; style="margin:0px 0px 0px 10px"  src="images/3/R.png" />
-  <img style="float:right; margin:10px 0px 0px 0px" src="images/3/html.png" />
+  <img style="float:right; margin:10px 0px 0px 0px" src="https://mdn.mozillademos.org/files/3563/HTML5_Logo_128.png" />
 </div>
 
 
@@ -64,7 +64,7 @@ D-- >C
 ", width = "800", height = "500")
 ```
 -->
-<img style="margin-top:10px" src="images/3/modeling.png" />
+<img style="marign-left:50px;margin-top:10px" src="images/3/modeling.png" />
 
 ## What's The Dream? - Actionable Information
 A model that:
@@ -110,7 +110,7 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
 
 ## What Is Spark Job Server?
 
-“[A] RESTful interface for submitting and managing Apache Spark jobs, jars, and job contexts” (https://github.com/spark-jobserver/spark-jobserver)
+“[A] RESTful interface for submitting and managing Apache Spark jobs, jars, and job contexts.” (https://github.com/spark-jobserver/spark-jobserver)
 <br><br>
 <ol>
 <li>Create a JAR with an object implementing the SparkJob trait
