@@ -23,5 +23,21 @@ slides > slide {
     &::before {
       content: $social-tags;
     }
+    
+    article.smallplus {
+      pre {
+        font-size: 10px;
+        line-height: 15px;
+        letter-spacing: 0;
+      }
+    }
+    
+    article.smalldoubleplus {
+      pre {
+        font-size: 5px;
+        line-height: 10px;
+        letter-spacing: 0;
+      }
+    }
   }
 }

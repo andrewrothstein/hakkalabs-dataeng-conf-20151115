@@ -57,7 +57,7 @@ import org.apache.hadoop.util.StringUtils;
 ```
 <footer class="source">http://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v2.0</footer>
 
-## Word Count So Easy! {.smaller}
+## Word Count So Easy! {.smallplus}
 
 ```java
 public class WordCount2 {
@@ -92,7 +92,7 @@ public class WordCount2 {
     }
 ```
 
-## Word Count So Easy! {.smaller}
+## Word Count So Easy! {.smallplus}
 
 ```java
 
@@ -127,7 +127,11 @@ public class WordCount2 {
       }
     }
   }
+```
 
+## Word Count So Easy! {.smalldoubleplus}
+
+```java
   public static class IntSumReducer
        extends Reducer<Text,IntWritable,Text,IntWritable> {
     private IntWritable result = new IntWritable();
@@ -143,11 +147,7 @@ public class WordCount2 {
       context.write(key, result);
     }
   }
-```
-
-## Word Count So Easy! {.smaller}
-
-```java
+  
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     GenericOptionsParser optionParser = new GenericOptionsParser(conf, args);
@@ -188,7 +188,8 @@ public class WordCount2 {
 
 ## We Do Big Data {.centered}
 
-<img src="http://cdn.meme.am/instances2/500x/1902975.jpg" width="60%" />
+<img src="http://i.imgur.com/OF87Yiw.jpg" width="60%" />
+<footer class="source">http://i.imgur.com/OF87Yiw.jpg</footer>
 
 ## Until Spark Came Along
 
@@ -238,14 +239,14 @@ The *spark-submit* script in Spark’s bin directory is used to launch applicati
 
 ```bash
 # Run application locally on 8 cores
-./bin/spark-submit \
+$SPARK_HOME/bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master local[8] \
   /path/to/examples.jar \
   100
 
 # Run on a Spark Standalone cluster in client deploy mode
-./bin/spark-submit \
+$SPARK_HOME/bin/spark-submit \
   --class org.apache.spark.examples.SparkPi \
   --master spark://207.184.161.138:7077 \
   --executor-memory 20G \
@@ -259,33 +260,8 @@ The *spark-submit* script in Spark’s bin directory is used to launch applicati
 
 <footer class="source">http://spark.apache.org/docs/latest/submitting-applications.html</footer>
 
-## Submit Spark Application
 
-```{r, echo=FALSE}
-DiagrammeR::mermaid("
-sequenceDiagram
-  developer->>sbt: create assembly jar
-  sbt->>developer: done packaging
-  alt client mode
-    developer->>cluster host: scp jar
-    cluster host->>developer: done
-    developer->>cluster host: spark-submit
-    cluster host->>cluster manager: submit job synchronously
-    cluster manager->>developer: done
-  else cluster mode
-    developer->>cluster manager: spark-submit asynchronously
-    cluster manager->>developer: submitted and running
-  end
-", width = "800", height = "500")
-```
-
-<div class="notes">
-The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.
-</div>
-
-
-
-## Bash script rocks! {.smaller}
+## Bash Scripting Rocks! {.smaller}
 
 ```bash
 #!/bin/bash
@@ -303,7 +279,7 @@ time \
     spark-submit \
     --master yarn-cluster \
     --num-executors 1000 \
-    --class com.bfm.amps.KMClustering \
+    --class com.awesome.ml.KMClustering \
     --driver-class-path ${HBASE_CLASSPATH} \
     --driver-memory=3g --executor-memory=3g \
     --conf="spark.executor.extraClassPath=${HBASE_CLASSPATH}" \
@@ -314,12 +290,12 @@ time \
     -hbase=${HBASE_KEYPREFIX}
 ```
 
-## Bash script rocks! {.centered}
+## Bash Scripting Rocks! {.centered}
 
 ![](http://cdn.meme.am/instances/64064889.jpg)
 <footer class="source">http://memegenerator.net/instance/37544999</footer>
 
-## Bash script rocks?
+## Bash Scripting Rocks?
 
 > - Environment isolation difficult to achieve (repeatability)
 > - Weak abstraction and encapsulation (code reuse)
@@ -335,13 +311,13 @@ time \
 > - Multiple non-instantaneous steps
     - Build, Upload, Submit
 > - Multiple main classes
-    - Exploratory Analysis, Model Training, Model Evaluation
+    - Exploratory Analysis, Model Training, Model Evaluation and etc
 > - Multiple projects
-    - Batch ETL, ML, Streaming
+    - Core, Batch ETL, ML, Streaming, Visualization and etc
 > - Multiple configurations
-    - Different Datasets
+    - Different Datasets, Parameters and etc
 > - Multiple deployment locations
-    - local, yarn, EC2
+    - local, yarn, EC2 and etc
 
 ## Scala! {.centered}
 
@@ -400,7 +376,7 @@ automatic parallel execution
 
 > - Create tasks specific to each project
 > - Common settings/tasks are automatically deduplicated
-> - Parallelizable tasks are automatically executed concurrently
+> - Tasks are executed in parallel
 
 # It's extensible! | Demo: Deploy on *AWS EC2*
 
@@ -456,6 +432,30 @@ Driver Program -> Communicate with Cluster Manager to request resources. Broadca
 Executors -> Listen to Driver for tasks to process and respond with status. Inter-executor communication to exchange shuffled/broadcasted data.
 </div>
 
+## Submit Spark Application
+
+```{r, echo=FALSE}
+DiagrammeR::mermaid("
+sequenceDiagram
+  developer->>sbt: create assembly jar
+  sbt->>developer: done packaging
+  alt client mode
+    developer->>cluster host: scp jar
+    cluster host->>developer: done
+    developer->>cluster host: spark-submit
+    cluster host->>cluster manager: submit job synchronously
+    cluster manager->>developer: done
+  else cluster mode
+    developer->>cluster manager: spark-submit asynchronously
+    cluster manager->>developer: submitted and running
+  end
+", width = "800", height = "500")
+```
+
+<div class="notes">
+The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.
+</div>
+
 ## Client Deployment Mode {.centered}
 
 ![](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/images/spark-yarn-client.png)
@@ -482,28 +482,4 @@ The reality is that Developer often doesn't develops in the same data center as 
 Cluster mode runs the Driver Program in a container JVM. For the case of YARN, it runs in the same container where Application Master lives. This ensures driver and executers can communicate with low latency.
 
 While logs now can only be retrieved as application logs in YARN, this has the added benefits that logs are automatically archived.
-
-Let's see how this simplifies things!
-</div>
-
-## The Role of Developer (Cluster Mode)
-
-> - Create application JAR
-    ```
-    sbt vis/assembly
-    ```
-    Include all runtime dependencies
-> - Execute *spark-submit*
-    ```
-    export HADOOP_CONF_DIR=<yarn-site.xml location>
-    $SPARK_HOME/bin/spark-submit --class my.DataVis \
-      --master yarn-cluster --num-executors 100 \
-      vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar \
-      --input test_input --output test_output --test myMagicalTestingFeature
-    ```
-> - Developer has to set up `$SPARK_HOME` with correct version. Not perfectly repeatable
-
-
-<div class="notes">
-We are happy to see we eliminated one step! However now developer is required to setup the SPARK distribution on their dev machine. It's not like we need an extra step for scare new developer away and not too mention this can be a bit brittle when you bump Spark version.
 </div>

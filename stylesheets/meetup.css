@@ -17,3 +17,15 @@ slides > slide.title-slide hgroup p:last-child {
 slides > slide:not(.nobackground)::before {
   content: "";
 }
+/* line 28, ../sass/meetup.scss */
+slides > slide:not(.nobackground) article.smallplus pre {
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: 0;
+}
+/* line 36, ../sass/meetup.scss */
+slides > slide:not(.nobackground) article.smalldoubleplus pre {
+  font-size: 5px;
+  line-height: 10px;
+  letter-spacing: 0;
+}
