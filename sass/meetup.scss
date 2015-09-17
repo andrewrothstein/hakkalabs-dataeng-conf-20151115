@@ -18,12 +18,12 @@ slides > slide {
       }
     }
   }
-  
+
   &:not(.nobackground) {
     &::before {
       content: $social-tags;
     }
-    
+
     article.smallplus {
       pre {
         font-size: 10px;
@@ -31,13 +31,29 @@ slides > slide {
         letter-spacing: 0;
       }
     }
-    
+
     article.smalldoubleplus {
       pre {
         font-size: 5px;
         line-height: 10px;
         letter-spacing: 0;
       }
+    }
+
+    .columns-3 {
+      -webkit-column-count: 3;
+      -moz-column-count: 3;
+      -ms-column-count: 3;
+      -o-column-count: 3;
+      column-count: 3;
+    }
+
+    .columns-2 {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      -ms-column-count: 2;
+      -o-column-count: 2;
+      column-count: 2;
     }
   }
 }

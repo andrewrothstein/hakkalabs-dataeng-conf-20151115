@@ -29,3 +29,19 @@ slides > slide:not(.nobackground) article.smalldoubleplus pre {
   line-height: 10px;
   letter-spacing: 0;
 }
+/* line 43, ../sass/meetup.scss */
+slides > slide:not(.nobackground) .columns-3 {
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  -ms-column-count: 3;
+  -o-column-count: 3;
+  column-count: 3;
+}
+/* line 51, ../sass/meetup.scss */
+slides > slide:not(.nobackground) .columns-2 {
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  -ms-column-count: 2;
+  -o-column-count: 2;
+  column-count: 2;
+}
