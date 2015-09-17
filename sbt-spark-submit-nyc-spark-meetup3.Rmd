@@ -40,25 +40,56 @@ The Optimal Implementation Of The Goal
 </div>
 
 
-## What's The Dream? - Understanding The Past {.centered}
+## What's The Dream? - Processing {.centered}
+<!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Raw Data]-->B[Data On Cluster]
-B[Data On Cluster]-->C[On Cluster]
+A[Raw Data]-- >B[Data On Cluster]
+B[Data On Cluster]-- >C[Features On Cluster]
 ", width = "800", height = "500")
 ```
+-->
+<img style="margin-top:10px" src="images/3/processing.png" />
 
-## What's The Dream? - Understanding The Past {.centered}
+## What's The Dream? - Modeling {.centered}
+<!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Extract Features On Cluster]-->B[Understand Features]
-B[Data On Cluster]-->A[On Cluster]
+A[Features On Cluster]-- >B[Understand Features]
+B[Understand Features]-- >C[Model]
+C[Model]-- >D[Numerically and Visually Evaluate Model]
+D-- >C
 ", width = "800", height = "500")
 ```
+-->
+<img style="margin-top:10px" src="images/3/modeling.png" />
 
-## What's The Dream? - Predicting The Future {.centered}
+## What's The Dream? - Actionable Information
+A model that:
+
+1. Takes in raw data
+2. AUTOMATICALLY produces NUMERICAL and VISUAL analyses that NON-TECHNICAL individuals can use to make decisions
+
+## What Are We Discussing Today? {.centered}
+<!--- Code for generating this image
+```{r, echo=FALSE}
+DiagrammeR::mermaid("
+graph TB
+A[Features On Cluster]-- >B[Understand Features]
+B[Understand Features]-- >C[Model]
+C[Model]-- >D[Numerically and Visually Evaluate Model]
+D-- >C
+
+style B stroke:#FF0000, stroke-width: 3, 
+style C stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
+style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
+
+", width = "800", height = "500")
+```
+-->
+<img style="margin-top:10px" src="images/3/today.png" />
 
 ## I Big Data. Can You? {.centered}
 
@@ -91,7 +122,7 @@ B[Data On Cluster]-->A[On Cluster]
   <ul>
     curl --data-binary @ajaxJob.jar jobserver.com:8090/jars/ajaxJob
   </ul>
-<li>Call It With AJAX
+<li>Call it with AJAX
   <ul>
     curl --d “input.params = param1 …”
     jobserver.com:8090/jobs?appName=ajaxJob?classPath=path.to.object
@@ -140,326 +171,3 @@ B[Data On Cluster]-->A[On Cluster]
 <li>Copy config/local.conf.template to config/internal.conf and modify to fit your environment</li>
 <li>Run bin/server_deploy.sh internal</li>
 </ol>
-
-
-## We Do Big Data {.centered}
-
-<img src="http://cdn.meme.am/instances2/500x/1902975.jpg" width="60%" />
-
-## Until Spark Came Along
-
-```scala
-val textFile = spark.textFile("hdfs://...")
-val counts = textFile.flatMap(line => line.split(" "))
-                 .map(word => (word, 1))
-                 .reduceByKey(_ + _)
-counts.saveAsTextFile("hdfs://...")
-```
-
-### 
-
-<div class="centered">
-  <img src="http://spark.apache.org/images/logistic-regression.png" height="250px" />
-  <img src="http://img.memecdn.com/happy-no-cat_o_1052698.jpg" height="250px" />
-</div>
-
-<footer class="source">http://www.dispuutcirce.nl/leden/img_2426/
-http://spark.apache.org/</footer>
-
-## Spark First World Problem {.centered}
-
-![](https://i.imgflip.com/r4xnp.jpg)
-
-## Submit Spark Application {.smaller}
-
-Create application JAR
-```
-sbt vis/assembly
-```
-
-Upload JAR to cluster
-```
-scp vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar my-awesome-spark-cluster:
-```
-
-<div class="centered">
-  <img src="http://geekshumor.com/wp-content/uploads/2013/06/My-codes-compiling.png" width="50%" />
-</div>
-
-<footer class="source">https://xkcd.com/303/</footer>
-
-## Submit Spark Application {.smaller}
-
-The *spark-submit* script in Spark’s bin directory is used to launch applications on a cluster.
-
-```bash
-# Run application locally on 8 cores
-./bin/spark-submit \
-  --class org.apache.spark.examples.SparkPi \
-  --master local[8] \
-  /path/to/examples.jar \
-  100
-
-# Run on a Spark Standalone cluster in client deploy mode
-./bin/spark-submit \
-  --class org.apache.spark.examples.SparkPi \
-  --master spark://207.184.161.138:7077 \
-  --executor-memory 20G \
-  --total-executor-cores 100 \
-  /path/to/examples.jar \
-  1000
-```
-
-> - Commands difficult to remember
-> - No easy way to store different pairs of arguments
-
-<footer class="source">http://spark.apache.org/docs/latest/submitting-applications.html</footer>
-
-## Submit Spark Application
-
-```{r, echo=FALSE}
-DiagrammeR::mermaid("
-sequenceDiagram
-  developer->>sbt: create assembly jar
-  sbt->>developer: done packaging
-  alt client mode
-    developer->>cluster host: scp jar
-    cluster host->>developer: done
-    developer->>cluster host: spark-submit
-    cluster host->>cluster manager: submit job synchronously
-    cluster manager->>developer: done
-  else cluster mode
-    developer->>cluster manager: spark-submit asynchronously
-    cluster manager->>developer: submitted and running
-  end
-", width = "800", height = "500")
-```
-
-<div class="notes">
-The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.
-</div>
-
-
-
-## Bash script rocks! {.smaller}
-
-```bash
-#!/bin/bash
-
-PROJECT_VER=SNAPSHOT
-PROJECT_ML_JAR=${PROJECT_DIR}/project-ml-assembly-${PROJECT_VER}.jar
-
-PREFIX=kmeans
-HBASE_KEYPREFIX=${PREFIX}_${SUFFIX}
-HBASE_CLASSPATH=/etc/hbase/conf:/usr/lib/hbase/lib/hbase-client.jar:/usr/lib/hbase/lib/hbase-common.jar:/usr/lib/hbase/lib/hbase-examples.jar:/usr/lib/hbase/lib/hbase-hadoop2-compat.jar:/usr/lib/hbase/lib/hbase-hadoop-compat.jar:/usr/lib/hbase/lib/hbase-it.jar:/usr/lib/hbase/lib/hbase-prefix-tree.jar:/usr/lib/hbase/lib/hbase-protocol.jar:/usr/lib/hbase/lib/hbase-server.jar:/usr/lib/hbase/lib/hbase-shell.jar:/usr/lib/hbase/lib/hbase-testing-util.jar:/usr/lib/hbase/lib/hbase-thrift.jar:/usr/lib/hbase/lib/htrace-core-2.04.jar
-
-OUTPUT_HDFS_DIR=${PREFIX}/${SUFFIX}
-
-time \
-    spark-submit \
-    --master yarn-cluster \
-    --num-executors 1000 \
-    --class com.bfm.amps.KMClustering \
-    --driver-class-path ${HBASE_CLASSPATH} \
-    --driver-memory=3g --executor-memory=3g \
-    --conf="spark.executor.extraClassPath=${HBASE_CLASSPATH}" \
-    --conf="spark.yarn.jar=hdfs:///proj/share/spark/spark-assembly-1.5.0-hadoop2.6.0.jar" \
-    ${PROJECT_ML_JAR} \
-    -output=${OUTPUT_HDFS_DIR} -input=my_awesome_big_dataset \
-    -k=10 -partitions=10 -runs=10 \
-    -hbase=${HBASE_KEYPREFIX}
-```
-
-## Bash script rocks! {.centered}
-
-![](http://cdn.meme.am/instances/64064889.jpg)
-<footer class="source">http://memegenerator.net/instance/37544999</footer>
-
-## Bash script rocks?
-
-> - Environment isolation difficult to achieve (repeatability)
-> - Weak abstraction and encapsulation (code reuse)
-> - Runtime exception only (reliability)
-
-<div class="centered">
-  ![](http://images-cdn.moviepilot.com/image/upload/c_fill,h_281,t_mp_quality,w_500/-2a86a3c7-9206-41b1-9f39-558bbe914d27.gif)
-</div>
-<footer class="source">http://animatedmeme.blogspot.com/2013/06/peter-griffin-vs-blinds.html</footer>
-
-## Spark Development Challenges
-
-> - Multiple non-instantaneous steps
-    - Build, Upload, Submit
-> - Multiple main classes
-    - Exploratory Analysis, Model Training, Model Evaluation
-> - Multiple projects
-    - Batch ETL, ML, Streaming
-> - Multiple configurations
-    - Different Datasets
-> - Multiple deployment locations
-    - local, yarn, EC2
-
-## Scala! {.centered}
-
-![](http://cdn.meme.am/instances/58038541.jpg)
-<footer class="source">http://memegenerator.net/instance/58038541</footer>
-
-# *sbt-spark-submit* Plugin to Rescue | Demo: SparkPi Submission for Local and YARN
-
-<div class="notes">
-change deploy strategy on the go;
-change settings on the go;
-can store multiple configuration;
-alter configuration only triggers rebuild the build not the project;
-works with multiple main classes
-</div>
-
-## What is *sbt*
-
-> The interactive build tool
->
-> Use Scala to define your tasks. Then run them in parallel from the shell.
-
-> - *build.sbt* uses an elegant Scala DSL for build definition 
-> - *project/\*.scala* use full power of Scala to configure the build and create custom tasks
-
-<footer class="source">http://www.scala-sbt.org/</footer>
-
-## Why *sbt*
-
-> - Fast incremental build
-> - Continous compilation/testing
-> - Concise and powerful configuration
-> - Built-in auto-complete
-> - IDE highlights compile time exception
-
-## Scala! {.centered}
-
-<img src="https://s-media-cache-ak0.pinimg.com/736x/7b/b7/06/7bb706cc6f2ac6e62c58b299acf3f362.jpg" width="50%" />
-<footer class="source">http://www.iamprogrammer.net/</footer>
-
-## Scala! {.centered}
-
-<img src="http://i.imgur.com/ju1CgAo.jpg" width="50%" />
-<footer class="source">http://imgur.com/r/programmingmemes/ju1CgAo</footer>
-
-# Cats Don't Like Dogs | Demo: A Multi-project Build
-
-<div class="notes">
-task is bind to specific project
-
-automatic common assembly target deduplication;
-automatic parallel execution
-</div>
-
-## *sbt* Multi-project and Deduplication
-
-> - Create tasks specific to each project
-> - Common settings/tasks are automatically deduplicated
-> - Parallelizable tasks are automatically executed concurrently
-
-# It's extensible! | Demo: Deploy on *AWS EC2*
-
-<div class="notes">
-https://github.com/saurfang/sbt-spark-submit/tree/master/examples/sbt-assembly-on-ec2
-
-We can add `libraryDependencies` in `plugins.sbt` which adds the dependencies into the build not the project.
-Now we have all the Java and Scala libraries at our disposable to create our build.
-
-*InputSetting* are overriable and can contain side effects that prepare our deployment.
-</div>
-
-## *sbt-spark-submit* Recap
-
-> - Streamline build, upload and submit into single task
-> - Codify *spark-submit* command into settings
-> - Integrate well for multi-project
-> - Extensible
-
-## Thank you {.smaller}
-
-Slides and code
-
-https://github.com/saurfang/nyc-spark-meetup
-
-*sbt-spark-submit*
-
-https://github.com/saurfang/sbt-spark-submit
-
-<div class="centered">
-  ![](http://www.blankchapters.com/wp-content/uploads/2012/12/meme-data-data-everywhere.png)
-</div>
-
-<footer class="source">http://www.blankchapters.com/2012/12/22/big-data-is-not-always-the-solution-to-all-our-problems</footer>
-
-# Appendix
-
-## Spark Cluster Mode Overview
-
-> - Driver Program
-> - Executors (worker, slave, container)
-
-<div class="centered">
-  ![](http://spark.apache.org/docs/latest/img/cluster-overview.png)
-</div>
-
-<footer class="source">http://spark.apache.org/docs/latest/cluster-overview.html</footer>
-
-<div class="notes">
-Spark applications run as independent sets of processes on a cluster, coordinated by the SparkContext object in your main program (called the driver program).
-
-Driver Program -> Communicate with Cluster Manager to request resources. Broadcast JAR and common files to executors. Sends serialized tasks to executors to run.
-Executors -> Listen to Driver for tasks to process and respond with status. Inter-executor communication to exchange shuffled/broadcasted data.
-</div>
-
-## Client Deployment Mode {.centered}
-
-![](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/images/spark-yarn-client.png)
-
-<footer class="source">http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_running_spark_on_yarn.html</footer>
-
-
-<div class="notes">
-Client mode runs the Driver Program in the same JVM as *spark-submit*. This has the benefit that logs are shown on the same console. However since Driver Program constantly communicates with Executors, it's often required to run it on a co-located cluster host.
-The reality is that Developer often doesn't develops in the same data center as the Hadoop cluster. Wouldn't it be nice if we can submit to a remote cluster right here from our development environment? This is where cluster deployment mode comes in!
-</div>
-
-
-## Cluster Deployment Mode {.centered}
-
-<div class="centered">
-  ![](http://www.cloudera.com/content/cloudera/en/documentation/core/latest/images/spark-yarn-cluster.png)
-</div>
-
-<footer class="source">http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_running_spark_on_yarn.html</footer>
-
-
-<div class="notes">
-Cluster mode runs the Driver Program in a container JVM. For the case of YARN, it runs in the same container where Application Master lives. This ensures driver and executers can communicate with low latency.
-
-While logs now can only be retrieved as application logs in YARN, this has the added benefits that logs are automatically archived.
-
-Let's see how this simplifies things!
-</div>
-
-## The Role of Developer (Cluster Mode)
-
-> - Create application JAR
-    ```
-    sbt vis/assembly
-    ```
-    Include all runtime dependencies
-> - Execute *spark-submit*
-    ```
-    export HADOOP_CONF_DIR=<yarn-site.xml location>
-    $SPARK_HOME/bin/spark-submit --class my.DataVis \
-      --master yarn-cluster --num-executors 100 \
-      vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar \
-      --input test_input --output test_output --test myMagicalTestingFeature
-    ```
-> - Developer has to set up `$SPARK_HOME` with correct version. Not perfectly repeatable
-
-
-<div class="notes">
-We are happy to see we eliminated one step! However now developer is required to setup the SPARK distribution on their dev machine. It's not like we need an extra step for scare new developer away and not too mention this can be a bit brittle when you bump Spark version.
-</div>

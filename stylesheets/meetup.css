@@ -13,23 +13,33 @@ slides > slide.title-slide hgroup p {
 slides > slide.title-slide hgroup p:last-child {
   margin-top: 5px !important;
 }
-/* line 23, ../sass/meetup.scss */
+/* line 22, ../sass/meetup.scss */
+slides > slide:not(.nobackground) {
+  font-family: Arial, sans-serif;
+}
+/* line 25, ../sass/meetup.scss */
 slides > slide:not(.nobackground)::before {
   content: "";
 }
-/* line 28, ../sass/meetup.scss */
+/* line 30, ../sass/meetup.scss */
+slides > slide:not(.nobackground) article.smallplus p, slides > slide:not(.nobackground) article.smallplus ul {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0;
+}
+/* line 35, ../sass/meetup.scss */
 slides > slide:not(.nobackground) article.smallplus pre {
   font-size: 10px;
   line-height: 15px;
   letter-spacing: 0;
 }
-/* line 36, ../sass/meetup.scss */
+/* line 43, ../sass/meetup.scss */
 slides > slide:not(.nobackground) article.smalldoubleplus pre {
   font-size: 5px;
   line-height: 10px;
   letter-spacing: 0;
 }
-/* line 43, ../sass/meetup.scss */
+/* line 50, ../sass/meetup.scss */
 slides > slide:not(.nobackground) .columns-3 {
   -webkit-column-count: 3;
   -moz-column-count: 3;
@@ -37,7 +47,7 @@ slides > slide:not(.nobackground) .columns-3 {
   -o-column-count: 3;
   column-count: 3;
 }
-/* line 51, ../sass/meetup.scss */
+/* line 58, ../sass/meetup.scss */
 slides > slide:not(.nobackground) .columns-2 {
   -webkit-column-count: 2;
   -moz-column-count: 2;

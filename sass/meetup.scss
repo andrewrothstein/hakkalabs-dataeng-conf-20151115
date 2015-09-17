@@ -20,11 +20,18 @@ slides > slide {
   }
 
   &:not(.nobackground) {
+    font-family: Arial, sans-serif;
+
     &::before {
       content: $social-tags;
     }
 
     article.smallplus {
+      p, ul {
+        font-size: 12px;
+        line-height: 18px;
+        letter-spacing: 0;
+      }
       pre {
         font-size: 10px;
         line-height: 15px;

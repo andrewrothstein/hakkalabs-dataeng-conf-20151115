@@ -1,0 +1,58 @@
+---
+title: "spark-data-sciences"
+subtitle: "Introduction, Context"
+output:
+  #ioslides_presentation:
+  bfmmarkdown::bfmslides_presentation:
+    #self_contained: false
+    css: 
+      - stylesheets/mermaid.forest.css
+      - stylesheets/meetup.css
+    mathjax: null
+date: "2015-09-24"
+author:
+  - name: "Andrew Rothstein<br> Financial Modeling Group - Advanced Data Analytics"
+---
+
+# Who are we? | BlackRock - "to create a better financial future for our clients"
+# Who are our clients? | Institutional, retail, advisory, solutions
+
+## How?
+> - Aladdin - Software enabled business processes for running an asset manager
+> - A culture of risk management - quantitatively measure/describe, simulate/forecast
+> - Complex investments require similarly complex financial models to effectively risk manage
+> - Complex financial models are data hungry beasts that need to be fed and groomed.
+
+## How do we build financial models?
+> - Data, data, data
+> - Domain knowledge expressed in human directed feature selection
+> - Visual representations of the data/model to create a feedback loop for the financial modeler
+> - The Bionic Financial Modeler leverages technology to produce higher quality models
+    - engineer for scale and straight-through processing
+    - drive down the mean time per iteration
+    - more iterations yield deeper understanding of the domain and higher quality financial models
+
+## Why Spark?
+
+### Why Scala?
+* Functional programming allows for succinct expression of complex data processing tasks in composable ways
+* Spark Scala programs do not incur substantial ceremony whilst delivering concurrency and parallelism
+
+## Why Spark?
+
+### Why Akka?
+* Building stateful, scalable, composable, distributed systems is _really hard_ to do correctly
+* Message passing + the Actors model of concurrent computation does a great job at hiding that complexity
+* Functional reactive == high performance
+
+## Why Spark?
+
+### Spark helps us manage complexity and do so scalably
+* We see Spark as a functional successor to Hadoop MR.
+* The fundamental resilient distributed data structures are fostering a strong breadth of derived libraries and application integrations that are #awesome
+** DataFrames and SQL, MLLib, Spark Streaming, SparkR
+
+## Please...
+- Make it fast and hide complexity/ceremony from me!
+- Make it visual to stimulate my creativity!
+- Make this experience a virtuous cycle of machine/human learning!
