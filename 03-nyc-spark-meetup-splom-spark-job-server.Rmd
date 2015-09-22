@@ -1,6 +1,6 @@
 ---
 title: "I Big Data and You Can Too"
-subtitle: "Unlocking The Potential Big Data"
+subtitle: "Unlocking The Power Of Big Data"
 output:
   #ioslides_presentation:
   bfmmarkdown::bfmslides_presentation:
@@ -140,7 +140,7 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
   <br><br>
   YARN
   <br><br>
-  Private Cluster
+  Private Servers
   <br><br>
   <div style="float:right">
   <h2>Externally</h2>
@@ -159,16 +159,22 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
 
 <ol>
 <li>Clone the repo at https://github.com/David-Durst/spark-jobserver</li>
-<li>Setup Aws CLi</li>
+<li>Setup AWS CLI</li>
 <li>Run bin/ec2_deploy.sh</li>
 <li>Run bin/ec2_example.sh</li>
 <li>Open the scatterplot matrix in the web browser with the URL printed by the script</li>
 </ol>
 
+## Try Our External Version {.centered}
+<img style="padding-top:60px;width:100%" src="images/3/external1.png" />
+
+## Try Our External Version {.centered}
+<img style="padding-top:60px;width:100%" src="images/3/external2.png" />
+
 ## Create Your Own Internal Version
 
 <ol>
-<li>Clone the repo at https://github.com/David-Durst/spark-jobserver</li>
+<li>Clone the repo at https://github.com/spark-jobserver/spark-jobserver</li>
 <li>Copy config/local.sh.template to config/internal.sh and modify to fit your environment</li>
 <li>Copy config/local.conf.template to config/internal.conf and modify to fit your environment</li>
 <li>Run bin/server_deploy.sh internal</li>
