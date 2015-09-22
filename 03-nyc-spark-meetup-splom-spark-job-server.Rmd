@@ -16,20 +16,20 @@ author:
 
 ## What Is Big Data? {.centered}
 
-<img src="images/3/bigData.jpg" />
+<img src="images/3/bigData.png" />
 <footer class="source">Source: http://api.ning.com/files/tRHkwQN7s-Xz5cxylXG004GLGJdjoPd6bVfVBwvgu*F5MwDDUCiHHdmBW-JTEz0cfJjGurJucBMTkIUNdL3jcZT8IPfNWfN9/dv1.jpg</footer>
 
 ## What's The Goal? {.centered}
-<!---
+<!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Understanding The Past]-- >B[Interpreting The Present]
-B[Interpreting The Present]-- >C[Predicting The Future]
+A[Develop Intuition]-- >B[Formalize Knowledge]
+B-- >C[Make Prediction]
 ", width = "800", height = "500")
 ```
 -->
-<img style="margin-top:20px" src="images/3/goal.png" />
+<img style="" src="images/3/goal.png" />
 
 ## What's The Dream? {.centered}
 The Optimal Implementation Of The Goal
@@ -42,45 +42,42 @@ The Optimal Implementation Of The Goal
 </div>
 
 
-## What's The Dream? - Processing {.centered}
+## The Dream - Intuition {.centered}
 <!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Raw Data]-- >B[Data On Cluster]
-B[Data On Cluster]-- >C[Features On Cluster]
+A[Features]-- >B[Numerically and Visually Analyze Features]
 ", width = "800", height = "500")
 ```
 -->
-<img style="margin-top:10px" src="images/3/processing.png" />
+<img style="padding-top:60px;width:100%" src="images/3/processing.png" />
 
-## What's The Dream? - Modeling {.centered}
+## The Dream - Knowledge {.centered}
 <!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Features On Cluster]-- >B[Understand Features]
-B[Understand Features]-- >C[Model]
 C[Model]-- >D[Numerically and Visually Evaluate Model]
 D-- >C
 ", width = "800", height = "500")
 ```
 -->
-<img style="margin-left:50px;margin-top:10px" src="images/3/modeling.png" />
+<img style="padding-top:60px;width:100%" src="images/3/modeling.png" />
 
-## What's The Dream? - Actionable Information
+## The Dream - Prediction
 A model that:
 
 1. Consumes raw market/indictive data
-2. **Automatically** produces **numerical** and **visual** analyses that **business users** can leverage to make decisions
+2. **Automatically** produces **actionable information** that **business users** can leverage to make decisions
 
 ## What Are We Discussing Today? {.centered}
 <!--- Code for generating this image
 ```{r, echo=FALSE}
 DiagrammeR::mermaid("
 graph TB
-A[Features On Cluster]-- >B[Understand Features]
-B[Understand Features]-- >C[Model]
+A[Features]-- >B[Numerically and Visually Analyze Features]
+B-- >C[Model]
 C[Model]-- >D[Numerically and Visually Evaluate Model]
 D-- >C
 
@@ -91,7 +88,8 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
 ", width = "800", height = "500")
 ```
 -->
-<img style="margin-top:10px" src="images/3/today.png" />
+
+<img style="margin-top:-10px;height:500px" src="images/3/today.png" />
 
 ## I Big Data. Can You? {.centered}
 
@@ -161,8 +159,10 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
 
 <ol>
 <li>Clone the repo at https://github.com/David-Durst/spark-jobserver</li>
-<li>Run bin/ec2_deploy_and_kmeans.sh</li>
-<li>Open the scatterplot matrix in the web browser and enter the URL printed by the script</li>
+<li>Setup Aws CLi</li>
+<li>Run bin/ec2_deploy.sh</li>
+<li>Run bin/ec2_example.sh</li>
+<li>Open the scatterplot matrix in the web browser with the URL printed by the script</li>
 </ol>
 
 ## Create Your Own Internal Version
