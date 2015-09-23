@@ -1,6 +1,5 @@
 ---
-title: "I Big Data and You Can Too"
-subtitle: "Unlocking The Power Of Big Data"
+title: "I Big Data And You Can Too"
 output:
   #ioslides_presentation:
   bfmmarkdown::bfmslides_presentation:
@@ -93,7 +92,7 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
 
 <img style="margin-top:-10px;height:500px" src="images/3/today.png" />
 
-## I Big Data. Can You? {.centered}
+## The Reality {.centered}
 
 <img src="https://raw.githubusercontent.com/bbouille/start-spark/master/src/spark-shell-standalone.png" width="100%" />
 <br><br>
