@@ -35,10 +35,12 @@ B-- >C[Make Prediction]
 The Optimal Implementation Of The Goal
 <br><br>
 <br><br>
-<div style="margin:20px 0px 0px 0px" class="columns-3">
+<div style="margin:-50px 0px 0px 0px">
   <img src="images/3/spark.png"/>
-  <img style="float:right; style="margin:0px 0px 0px 10px"  src="images/3/R.png" />
+  <div style="margin:80px 0px 0px 0px" class="column-2">
+  <img style="float:left; style="margin:0px 0px 0px 10px"  src="images/3/R.png" />
   <img style="float:right; margin:10px 0px 0px 0px" src="images/3/html.png" />
+  </div>
 </div>
 
 
@@ -108,6 +110,32 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
 
 <img src="images/3/scatterplot.png" width="70%" />
 
+## Where Does Spark Job Server Fit?
+
+<div class="columns-2">
+  <h2>Internally</h2>
+  <br><br>
+  HTML5 Application
+  <br><br>
+  Spark Job Server
+  <br><br>
+  YARN
+  <br><br>
+  Private Servers
+  <br><br>
+  <div style="float:right;color:white">
+  <h2 style="color:white">Externally</h2>
+  <br><br>
+  HTML5 Application
+  <br><br>
+  Spark Job Server
+  <br><br>
+  Standalone Cluster
+  <br><br>
+  EC2
+  </div>
+</div>
+
 ## What Is Spark Job Server?
 
 "[A] RESTful interface for submitting and managing Apache Spark jobs, jars, and job contexts" (https://github.com/spark-jobserver/spark-jobserver)
@@ -155,6 +183,12 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
   </div>
 </div>
 
+## Try Our External Version {.centered}
+<img style="padding-top:60px;width:100%" src="images/3/external1.png" />
+
+## Try Our External Version {.centered}
+<img style="padding-top:60px;width:100%" src="images/3/external2.png" />
+
 ## Try Our External Version
 
 <ol>
@@ -164,12 +198,6 @@ style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
 <li>Run bin/ec2_example.sh</li>
 <li>Open the scatterplot matrix in the web browser with the URL printed by the script</li>
 </ol>
-
-## Try Our External Version {.centered}
-<img style="padding-top:60px;width:100%" src="images/3/external1.png" />
-
-## Try Our External Version {.centered}
-<img style="padding-top:60px;width:100%" src="images/3/external2.png" />
 
 ## Create Your Own Internal Version
 
