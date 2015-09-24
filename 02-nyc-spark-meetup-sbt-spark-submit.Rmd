@@ -19,15 +19,31 @@ author:
 <img src="http://s.tf1.fr/mmdia/i/67/6/minorityreport2-scan-17-3938676dxwep.jpg?v=1" width="100%" />
 <footer class="source">Source: https://99designs.com/designer-blog/2013/07/19/fantasy-user-interfaces/</footer>
 
+<div class="notes">
+- big data team
+- data TB size
+</div>
+
 ## What We Really Do {.centered}
 
 ![](http://s.quickmeme.com/img/ac/ac49486fe031828370067a6988293e43bca97a15d08508e388f0a757a9700103.jpg)
 <footer class="source">Source: http://www.quickmeme.com/p/3vovpz</footer>
 
+<div class="notes">
+- dev/debug distributed app is hard
+</div>
+
 ## Word Count {.centered}
 
 <img src="http://xiaochongzhang.me/blog/wp-content/uploads/2013/05/MapReduce_Work_Structure.png" width="100%" />"
 <footer class="source">Source: http://www.milanor.net/blog/?p=853</footer>
+
+<div class="notes">
+- data processing pipelines: map and reduce
+- word count
+    - easy to understand
+    - difficult to implement
+</div>
 
 ## Word Count So Easy! {.smaller}
 
@@ -186,10 +202,22 @@ public class WordCount2 {
 <img src="https://brianadamspr.files.wordpress.com/2012/11/was-that-sarcasm.jpg" width="50%" />
 <footer class="source">Source: http://knowledgespeakswisdomlistens.blogspot.com/2013/01/am-i-sheldon-cooper.html</footer>
 
+<div class="notes">
+- data processing pipelines: map and reduce
+- word count
+    - easy to understand
+    - difficult to implement
+</div>
+
 ## We Do Big Data {.centered}
 
 <img src="http://i.imgur.com/OF87Yiw.jpg" width="60%" />
 <footer class="source">Source: http://i.imgur.com/OF87Yiw.jpg</footer>
+
+<div class="notes">
+- alternative: hive, pig, scalding
+- map reduce is slow
+</div>
 
 ## Until Spark Came Along
 
@@ -211,11 +239,20 @@ counts.saveAsTextFile("hdfs://...")
 <footer class="source">Source: http://www.dispuutcirce.nl/leden/img_2426/
 http://spark.apache.org/</footer>
 
+<div class="notes">
+- spark easy to write
+- good performance
+</div>
+
 ## Spark First World Problem {.centered}
 
 ![](https://i.imgflip.com/r4xnp.jpg)
 
 <footer class="source">Source: https://i.imgflip.com/r4xnp.jpg</footer>
+
+<div class="notes">
+- submit jobs is the new bottleneck
+</div>
 
 ## Submit Spark Application {.smaller}
 
@@ -234,6 +271,12 @@ scp vis/target/scala-2.10/vis-assembly-x.y.z-SNAPSHOT.jar my-awesome-spark-clust
 </div>
 
 <footer class="source">Source: https://xkcd.com/303/</footer>
+
+<div class="notes">
+- build JAR and wait
+- copy the JAR and submit
+- easy to forget the command
+</div>
 
 ## Submit Spark Application {.smaller}
 
@@ -292,10 +335,20 @@ time \
     -hbase=${HBASE_KEYPREFIX}
 ```
 
+<div class="notes">
+- make it better with bash scripts
+- dumping ground
+</div>
+
 ## Bash Scripting Rocks! {.centered}
 
 ![](http://cdn.meme.am/instances/64064889.jpg)
 <footer class="source">Source: http://memegenerator.net/instance/37544999</footer>
+
+<div class="notes">
+- make it better with bash scripts
+- dumping ground
+</div>
 
 ## Bash Scripting Rocks?
 
@@ -307,6 +360,13 @@ time \
   ![](http://images-cdn.moviepilot.com/image/upload/c_fill,h_281,t_mp_quality,w_500/-2a86a3c7-9206-41b1-9f39-558bbe914d27.gif)
 </div>
 <footer class="source">Source: http://animatedmeme.blogspot.com/2013/06/peter-griffin-vs-blinds.html</footer>
+
+<div class="notes">
+- bash bad
+    - isolation
+    - code reuse
+    - reliability
+</div>
 
 ## Spark Development Challenges
 
@@ -320,6 +380,11 @@ time \
     - Different Datasets, Parameters, et. al.
  - Multiple deployment locations
     - local, yarn, EC2, et. al.
+
+<div class="notes">
+- this is madness
+- this is scala
+</div>
 
 ## Scala! {.centered}
 
@@ -432,6 +497,11 @@ def getMaster: Option[Instance] = {
   ec2.instances.find(_.securityGroups.exists(_.getGroupName == clusterName + "-master"))
 }
 ```
+
+<div class="notes">
+- dynamic infer of master hostname
+- tap the power of EC2 SDK
+</div>
 
 ## Scala! {.centered}
 
