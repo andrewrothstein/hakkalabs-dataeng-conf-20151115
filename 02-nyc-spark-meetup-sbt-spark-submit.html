@@ -439,7 +439,7 @@ Source: <a href='http://animatedmeme.blogspot.com/2013/06/peter-griffin-vs-blind
 
 </article></slide><slide class=''><hgroup><h2>Spark Development Challenges</h2></hgroup><article  id="spark-development-challenges">
 
-<ul class = 'build'>
+<ul>
 <li>Multiple non-instantaneous steps
 
 <ul>
@@ -458,7 +458,7 @@ Source: <a href='http://animatedmeme.blogspot.com/2013/06/peter-griffin-vs-blind
 <li>Multiple configurations
 
 <ul>
-<li>Different Datasets, Parameters and etc</li>
+<li>Different Datasets, Parameters, et. al.</li>
 </ul></li>
 <li>Multiple deployment locations
 
@@ -480,6 +480,36 @@ Source: <a href='http://memegenerator.net/instance/58038541' title=''>http://mem
 </article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2><em>sbt-spark-submit</em> Plugin to Rescue </h2><h3> Demo: SparkPi Submission for Local and YARN</h3></hgroup><article  id="sbt-spark-submit-plugin-to-rescue-demo-sparkpi-submission-for-local-and-yarn">
 
 <aside class='note'><section>change deploy strategy on the go; change settings on the go; can store multiple configuration; alter configuration only triggers rebuild the build not the project; works with multiple main classes</section></aside>
+
+</article></slide><slide class=''><hgroup><h2>Enable <em>sbt-spark-submit</em></h2></hgroup><article  id="enable-sbt-spark-submit">
+
+<p><code>project/plugins.sbt</code></p>
+
+<pre class = 'prettyprint lang-scala'>addSbtPlugin(&quot;com.github.saurfang&quot; % &quot;sbt-spark-submit&quot; % &quot;0.0.4&quot;)</pre>
+
+<p><code>project/SparkSubmit.scala</code></p>
+
+<pre class = 'prettyprint lang-scala'>object SparkSubmit {
+  lazy val settings =
+    SparkSubmitSetting(&quot;sparkPi&quot;, Seq(&quot;--class&quot;, &quot;SparkPi&quot;))
+}</pre>
+
+<p><code>build.sbt</code></p>
+
+<pre class = 'prettyprint lang-scala'>SparkSubmit.settings: _*</pre>
+
+</article></slide><slide class=''><hgroup><h2>Enable <em>sbt-spark-submit</em> YARN mode</h2></hgroup><article  id="enable-sbt-spark-submit-yarn-mode">
+
+<p>Add <code>build.sbt</code></p>
+
+<pre class = 'prettyprint lang-scala'>//fill in default YARN settings
+enablePlugins(SparkSubmitYARN)
+//submit the assembly jar with all dependencies
+sparkSubmitJar := assembly.value.getAbsolutePath
+//now blend in the sparkSubmit settings
+SparkSubmit.settings</pre>
+
+<p>Set <code>$HADOOP_CONF_DIR</code> to pick up YARN configuration</p>
 
 </article></slide><slide class=''><hgroup><h2>What is <em>sbt</em></h2></hgroup><article  id="what-is-sbt">
 
@@ -510,6 +540,38 @@ Source: <a href='http://www.scala-sbt.org/' title=''>http://www.scala-sbt.org/</
 <li>IDE highlights compile time exception</li>
 </ul>
 
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>It&#39;s extensible! </h2><h3> Demo: Deploy on <em>AWS EC2</em></h3></hgroup><article  id="its-extensible-demo-deploy-on-aws-ec2">
+
+<aside class='note'><section><p><a href='https://github.com/saurfang/sbt-spark-submit/tree/master/examples/sbt-assembly-on-ec2' title=''>https://github.com/saurfang/sbt-spark-submit/tree/master/examples/sbt-assembly-on-ec2</a></p>
+
+<p>We can add <code>libraryDependencies</code> in <code>plugins.sbt</code> which adds the dependencies into the build not the project. Now we have all the Java and Scala libraries at our disposable to create our build.</p>
+
+<em>InputSetting</em> are overriable and can contain side effects that prepare our deployment.</section></aside>
+
+</article></slide><slide class=''><hgroup><h2>Override Settings with Power of sbt</h2></hgroup><article  id="override-settings-with-power-of-sbt" class="smaller">
+
+<p><code>project/plugins.sbt</code></p>
+
+<pre class = 'prettyprint lang-scala'>libraryDependencies ++= Seq(
+  &quot;com.github.seratch&quot; %% &quot;awscala&quot;          % &quot;0.5.3&quot; excludeAll ExclusionRule(organization = &quot;com.amazonaws&quot;),
+  &quot;com.amazonaws&quot;      %  &quot;aws-java-sdk-s3&quot;  % &quot;1.10.1&quot;,
+  &quot;com.amazonaws&quot;      %  &quot;aws-java-sdk-ec2&quot; % &quot;1.10.1&quot;
+)</pre>
+
+<p><code>project/SparkSubmit.scala</code></p>
+
+<pre class = 'prettyprint lang-scala'>task.settings(sparkSubmitSparkArgs in task := {
+  Seq(
+    &quot;--master&quot;, getMaster.map(i =&gt; s&quot;spark://${i.publicDnsName}:6066&quot;).getOrElse(&quot;&quot;),
+    &quot;--deploy-mode&quot;, &quot;cluster&quot;,
+    &quot;--class&quot;, &quot;SparkPi&quot;
+  )
+}
+...
+def getMaster: Option[Instance] = {
+  ec2.instances.find(_.securityGroups.exists(_.getGroupName == clusterName + &quot;-master&quot;))
+}</pre>
+
 </article></slide><slide class=''><hgroup><h2>Scala!</h2></hgroup><article  id="scala-1" class="centered">
 
 <img src="https://s-media-cache-ak0.pinimg.com/736x/7b/b7/06/7bb706cc6f2ac6e62c58b299acf3f362.jpg" width="50%" />
@@ -522,19 +584,13 @@ Source: <a href='http://www.iamprogrammer.net/' title=''>http://www.iamprogramme
 
 </article></slide><slide class=''><hgroup><h2>Scala!</h2></hgroup><article  id="scala-2" class="centered">
 
-<img src="http://i.imgur.com/ju1CgAo.jpg" width="50%" />
+<img src="http://i.imgur.com/ju1CgAo.jpg" width="40%" />
 
 <footer class="source">
 
 Source: <a href='http://imgur.com/r/programmingmemes/ju1CgAo' title=''>http://imgur.com/r/programmingmemes/ju1CgAo</a>
 
 </footer>
-
-</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Multi-project Build </h2><h3> Demo</h3></hgroup><article  id="multi-project-build-demo">
-
-<aside class='note'><section><p>task is bind to specific project</p>
-
-automatic common assembly target deduplication; automatic parallel execution</section></aside>
 
 </article></slide><slide class=''><hgroup><h2><em>sbt</em> Multi-project Build</h2></hgroup><article  id="sbt-multi-project-build">
 
@@ -544,17 +600,15 @@ automatic common assembly target deduplication; automatic parallel execution</se
 <li>Tasks are executed in parallel</li>
 </ul>
 
-</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>It&#39;s extensible! </h2><h3> Demo: Deploy on <em>AWS EC2</em></h3></hgroup><article  id="its-extensible-demo-deploy-on-aws-ec2">
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Multi-project Build </h2><h3> Demo</h3></hgroup><article  id="multi-project-build-demo">
 
-<aside class='note'><section><p><a href='https://github.com/saurfang/sbt-spark-submit/tree/master/examples/sbt-assembly-on-ec2' title=''>https://github.com/saurfang/sbt-spark-submit/tree/master/examples/sbt-assembly-on-ec2</a></p>
+<aside class='note'><section><p>task is bind to specific project</p>
 
-<p>We can add <code>libraryDependencies</code> in <code>plugins.sbt</code> which adds the dependencies into the build not the project. Now we have all the Java and Scala libraries at our disposable to create our build.</p>
-
-<em>InputSetting</em> are overriable and can contain side effects that prepare our deployment.</section></aside>
+automatic common assembly target deduplication; automatic parallel execution</section></aside>
 
 </article></slide><slide class=''><hgroup><h2><em>sbt-spark-submit</em> Recap</h2></hgroup><article  id="sbt-spark-submit-recap">
 
-<ul class = 'build'>
+<ul>
 <li>Streamline build, upload and submit into single task</li>
 <li>Codify <em>spark-submit</em> command into settings</li>
 <li>Integrate well for multi-project</li>
@@ -604,8 +658,8 @@ Driver Program -&gt; Communicate with Cluster Manager to request resources. Broa
 
 </article></slide><slide class=''><hgroup><h2>Submit Spark Application</h2></hgroup><article  id="submit-spark-application-2">
 
-<p><div id="htmlwidget-1379" style="width:800px;height:500px;" class="DiagrammeR"></div>
-<script type="application/json" data-for="htmlwidget-1379">{"x":{"diagram":"\nsequenceDiagram\n  developer->>sbt: create assembly jar\n  sbt->>developer: done packaging\n  alt client mode\n    developer->>cluster host: scp jar\n    cluster host->>developer: done\n    developer->>cluster host: spark-submit\n    cluster host->>cluster manager: submit job synchronously\n    cluster manager->>developer: done\n  else cluster mode\n    developer->>cluster manager: spark-submit asynchronously\n    cluster manager->>developer: submitted and running\n  end\n"},"evals":[]}</script></p>
+<p><div id="htmlwidget-2011" style="width:800px;height:500px;" class="DiagrammeR"></div>
+<script type="application/json" data-for="htmlwidget-2011">{"x":{"diagram":"\nsequenceDiagram\n  developer->>sbt: create assembly jar\n  sbt->>developer: done packaging\n  alt client mode\n    developer->>cluster host: scp jar\n    cluster host->>developer: done\n    developer->>cluster host: spark-submit\n    cluster host->>cluster manager: submit job synchronously\n    cluster manager->>developer: done\n  else cluster mode\n    developer->>cluster manager: spark-submit asynchronously\n    cluster manager->>developer: submitted and running\n  end\n"},"evals":[]}</script></p>
 
 <aside class='note'><section>The process is a bit tedious and because every step is not instantaneous I often find myself execute one step and only realize I should proceed with next step minutes later.</section></aside>
 

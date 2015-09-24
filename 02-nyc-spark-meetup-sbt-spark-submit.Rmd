@@ -310,15 +310,15 @@ time \
 
 ## Spark Development Challenges
 
-> - Multiple non-instantaneous steps
+ - Multiple non-instantaneous steps
     - Build, Upload, Submit
-> - Multiple main classes
+ - Multiple main classes
     - Exploratory Analysis, Model Training, Model Evaluation, et. al.
-> - Multiple projects
+ - Multiple projects
     - Core, Batch ETL, ML, Streaming, Visualization, et. al.
-> - Multiple configurations
-    - Different Datasets, Parameters and etc
-> - Multiple deployment locations
+ - Multiple configurations
+    - Different Datasets, Parameters, et. al.
+ - Multiple deployment locations
     - local, yarn, EC2, et. al.
 
 ## Scala! {.centered}
@@ -335,6 +335,45 @@ can store multiple configuration;
 alter configuration only triggers rebuild the build not the project;
 works with multiple main classes
 </div>
+
+## Enable *sbt-spark-submit*
+
+`project/plugins.sbt`
+
+```scala
+addSbtPlugin("com.github.saurfang" % "sbt-spark-submit" % "0.0.4")
+```
+
+`project/SparkSubmit.scala`
+
+```scala
+object SparkSubmit {
+  lazy val settings =
+    SparkSubmitSetting("sparkPi", Seq("--class", "SparkPi"))
+}
+```
+
+`build.sbt`
+
+```scala
+SparkSubmit.settings: _*
+```
+
+## Enable *sbt-spark-submit* YARN mode
+
+Add `build.sbt`
+
+```scala
+//fill in default YARN settings
+enablePlugins(SparkSubmitYARN)
+//submit the assembly jar with all dependencies
+sparkSubmitJar := assembly.value.getAbsolutePath
+//now blend in the sparkSubmit settings
+SparkSubmit.settings
+```
+
+Set `$HADOOP_CONF_DIR` to pick up YARN configuration
+
 
 ## What is *sbt*
 
@@ -355,31 +394,6 @@ works with multiple main classes
 > - Built-in auto-complete
 > - IDE highlights compile time exception
 
-## Scala! {.centered}
-
-<img src="https://s-media-cache-ak0.pinimg.com/736x/7b/b7/06/7bb706cc6f2ac6e62c58b299acf3f362.jpg" width="50%" />
-<footer class="source">Source: http://www.iamprogrammer.net/</footer>
-
-## Scala! {.centered}
-
-<img src="http://i.imgur.com/ju1CgAo.jpg" width="50%" />
-<footer class="source">Source: http://imgur.com/r/programmingmemes/ju1CgAo</footer>
-
-# Multi-project Build | Demo
-
-<div class="notes">
-task is bind to specific project
-
-automatic common assembly target deduplication;
-automatic parallel execution
-</div>
-
-## *sbt* Multi-project Build
-
-> - Create tasks specific to each project
-> - Common settings/tasks are automatically deduplicated
-> - Tasks are executed in parallel
-
 # It's extensible! | Demo: Deploy on *AWS EC2*
 
 <div class="notes">
@@ -391,12 +405,65 @@ Now we have all the Java and Scala libraries at our disposable to create our bui
 *InputSetting* are overriable and can contain side effects that prepare our deployment.
 </div>
 
+## Override Settings with Power of sbt {.smaller}
+
+`project/plugins.sbt`
+
+```scala
+libraryDependencies ++= Seq(
+  "com.github.seratch" %% "awscala"          % "0.5.3" excludeAll ExclusionRule(organization = "com.amazonaws"),
+  "com.amazonaws"      %  "aws-java-sdk-s3"  % "1.10.1",
+  "com.amazonaws"      %  "aws-java-sdk-ec2" % "1.10.1"
+)
+```
+
+`project/SparkSubmit.scala`
+
+```scala
+task.settings(sparkSubmitSparkArgs in task := {
+  Seq(
+    "--master", getMaster.map(i => s"spark://${i.publicDnsName}:6066").getOrElse(""),
+    "--deploy-mode", "cluster",
+    "--class", "SparkPi"
+  )
+}
+...
+def getMaster: Option[Instance] = {
+  ec2.instances.find(_.securityGroups.exists(_.getGroupName == clusterName + "-master"))
+}
+```
+
+## Scala! {.centered}
+
+<img src="https://s-media-cache-ak0.pinimg.com/736x/7b/b7/06/7bb706cc6f2ac6e62c58b299acf3f362.jpg" width="50%" />
+<footer class="source">Source: http://www.iamprogrammer.net/</footer>
+
+## Scala! {.centered}
+
+<img src="http://i.imgur.com/ju1CgAo.jpg" width="40%" />
+<footer class="source">Source: http://imgur.com/r/programmingmemes/ju1CgAo</footer>
+
+## *sbt* Multi-project Build
+
+> - Create tasks specific to each project
+> - Common settings/tasks are automatically deduplicated
+> - Tasks are executed in parallel
+
+# Multi-project Build | Demo
+
+<div class="notes">
+task is bind to specific project
+
+automatic common assembly target deduplication;
+automatic parallel execution
+</div>
+
 ## *sbt-spark-submit* Recap
 
-> - Streamline build, upload and submit into single task
-> - Codify *spark-submit* command into settings
-> - Integrate well for multi-project
-> - Extensible
+- Streamline build, upload and submit into single task
+- Codify *spark-submit* command into settings
+- Integrate well for multi-project
+- Extensible
 
 ## Thank you {.smaller}
 
