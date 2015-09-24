@@ -515,9 +515,9 @@ def getMaster: Option[Instance] = {
 
 ## *sbt* Multi-project Build
 
-> - Create tasks specific to each project
-> - Common settings/tasks are automatically deduplicated
-> - Tasks are executed in parallel
+- Create tasks specific to each project
+- Common settings/tasks are automatically deduplicated
+- Tasks are executed in parallel
 
 # Multi-project Build | Demo
 
