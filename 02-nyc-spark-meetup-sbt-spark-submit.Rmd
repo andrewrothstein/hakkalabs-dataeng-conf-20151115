@@ -219,6 +219,16 @@ public class WordCount2 {
 - map reduce is slow
 </div>
 
+## We Do Big Data {.centered}
+
+<img src="http://image.slidesharecdn.com/b2412168-1ad6-4e80-bae2-df1d52736a45-150517001117-lva1-app6892/95/presentation-7-638.jpg?cb=1431821553" width="80%" />
+<footer class="source">Source: http://www.slideshare.net/ahmaurya/presentation-48235374</footer>
+
+<div class="notes">
+- alternative: hive, pig, scalding
+- map reduce is slow
+</div>
+
 ## Until Spark Came Along
 
 ```scala
@@ -233,16 +243,28 @@ counts.saveAsTextFile("hdfs://...")
 
 <div class="centered">
   <img src="http://spark.apache.org/images/logistic-regression.png" height="250px" />
-  <img src="http://img.memecdn.com/happy-no-cat_o_1052698.jpg" height="250px" />
 </div>
 
-<footer class="source">Source: http://www.dispuutcirce.nl/leden/img_2426/
-http://spark.apache.org/</footer>
+<footer class="source">Source: http://spark.apache.org/</footer>
 
 <div class="notes">
 - spark easy to write
 - good performance
 </div>
+
+## Until Spark Came Along
+
+<div class="centered">
+  <img src="http://img.memecdn.com/happy-no-cat_o_1052698.jpg" />
+</div>
+
+<footer class="source">Source: http://www.dispuutcirce.nl/leden/img_2426/</footer>
+
+<div class="notes">
+- spark easy to write
+- good performance
+</div>
+
 
 ## Spark First World Problem {.centered}
 
