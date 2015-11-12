@@ -1,0 +1,72 @@
+---
+title: "Apache Spark in Financial Modeling"
+output:
+  #ioslides_presentation:
+  bfmmarkdown::bfmslides_presentation:
+    #self_contained: false
+    css: 
+      - stylesheets/mermaid.forest.css
+      - stylesheets/meetup.css
+    mathjax: null
+date: "2015-11-15"
+author:
+  - name: "Andrew Rothstein / Sen Fang / David Durst<br>Financial Modeling Group - Advanced Data Analytics<br>BlackRock Financial Management"
+---
+
+## Who are we?
+* Andrew Rothstein - andrew.rothstein@blackrock.com
+    + @drewrothstein
+    + github.com/andrewrothstein
+* Forest Fang - forest.fang@blackrock.com
+    + @saurfang86
+    + github.com/saurfang
+* David Durst - david.durst@blackrock.com
+    + @davidbdurst
+    + github.com/david-durst
+
+## Who are we?
+* BlackRock - "to create a better financial future for our clients"
+* Who are our clients?
+    + Institutional - banks, insurance companies, pension funds, et. al.
+    + Retail - financial advisors, retirees, savers/you
+    + Solutions - advisory, Aladdin, et. al.
+
+<footer class="source">https://www.blackrock.com/corporate/en-se/about-us/mission-and-principles
+<br>https://en.wikipedia.org/wiki/Financial_market_participants</footer>
+
+## How?
+* Aladdin - Software enabled business processes for responsibly operating as an asset manager delivered as service
+* A culture of risk management
+    + quantitative
+    + measure/describe
+    + simulate/forecast
+* Complex investments require similarly complex financial models to effectively risk manage
+* Complex financial models are data hungry beasts that need to be fed and groomed
+
+## How do we build financial models?
+* Data, data, data
+* Domain knowledge expressed in human directed feature selection
+* Visual representations of the data/model to create a feedback loop for the financial modeler
+* The Bionic Financial Modeler leverages technology to produce higher quality models
+    + engineer for scale and straight-through processing
+    + drive down the mean time per iteration
+    + more iterations yield deeper understanding of the domain and higher quality financial models
+
+## Why Scala?
+* Functional programming allows for succinct expression of complex data processing tasks in composable ways
+* The type inferencing system allows for a type-safe scripting-like coding experience
+* Spark Scala programs incur limited syntactic ceremony whilst delivering concurrency and parallelism
+
+## Why Spark?
+* Spark helps us manage complexity and do so scalably
+* We see Spark as a functional successor to all things Hadoop MR.
+* The fundamental resilient distributed data structures are fostering a breadth of derived libraries and application integrations that are #awesome
+    + DataFrames and SQL
+    + MLLib
+    + Spark Streaming
+    + SparkR
+
+## Please, please, please...
+* Make it fast and hide complexity/ceremony from me!
+* Make it visual to stimulate my creativity!
+* Make this experience a virtuous cycle of machine/human learning!

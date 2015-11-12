@@ -1,0 +1,168 @@
+---
+title: "I Big Data And You Can Too"
+output:
+  #ioslides_presentation:
+  bfmmarkdown::bfmslides_presentation:
+    #self_contained: false
+    css: 
+      - stylesheets/mermaid.forest.css
+      - stylesheets/meetup.css
+    mathjax: null
+date: "2015-09-24"
+author:
+  - name: "David Durst<br> Financial Modeling Group - Advanced Data Analytics"
+---
+
+## What Is Big Data? {.centered}
+
+<img src="images/3/bigData.png" />
+<footer class="source">Source: http://api.ning.com/files/tRHkwQN7s-Xz5cxylXG004GLGJdjoPd6bVfVBwvgu*F5MwDDUCiHHdmBW-JTEz0cfJjGurJucBMTkIUNdL3jcZT8IPfNWfN9/dv1.jpg</footer>
+
+## What Is The Goal? {.centered}
+<!--- Code for generating this image
+```{r, echo=FALSE, eval=FALSE}
+DiagrammeR::mermaid("
+graph TB
+A[Develop Intuition]-- >B[Formalize Knowledge]
+B-- >C[Make Prediction]
+", width = "800", height = "500")
+```
+-->
+<img style="" src="images/3/goal.png" />
+
+## What Is The Dream? {.centered}
+The Optimal Implementation Of The Goal
+<br><br>
+<br><br>
+<div style="margin:-50px 0px 0px 0px">
+  <img src="images/3/spark.png"/>
+  <div style="margin:80px 0px 0px 0px" class="column-2">
+  <img style="float:left; style="margin:0px 0px 0px 10px"  src="images/3/R.png" />
+  <img style="float:right; margin:10px 0px 0px 0px" src="images/3/html.png" />
+  </div>
+</div>
+
+
+## The Dream - Intuition {.centered}
+<!--- Code for generating this image
+```{r, echo=FALSE, eval=FALSE}
+DiagrammeR::mermaid("
+graph TB
+A[Features]-- >B[Numerically and Visually Analyze Features]
+", width = "800", height = "500")
+```
+-->
+<img style="padding-top:60px;width:100%" src="images/3/processing.png" />
+
+## The Dream - Knowledge & Prediction {.centered}
+<!--- Code for generating this image
+```{r, echo=FALSE, eval=FALSE}
+DiagrammeR::mermaid("
+graph TB
+C[Model]-- >D[Numerically and Visually Evaluate Model]
+D-- >C
+", width = "800", height = "500")
+```
+-->
+<img style="padding-top:15px;width:100%;padding-bottom:25px" src="images/3/modeling.png" />
+
+A model that **automatically** produces **accurate forecasts** that **business users** can leverage to make **educated decisions** about the future.
+
+## Where Are We Focusing Today? {.centered}
+<!--- Code for generating this image
+```{r, echo=FALSE, eval=FALSE}
+DiagrammeR::mermaid("
+graph TB
+A[Features]-- >B[Numerically and Visually Analyze Features]
+B-- >C[Model]
+C[Model]-- >D[Numerically and Visually Evaluate Model]
+D-- >C
+
+style B stroke:#FF0000, stroke-width: 3, 
+style C stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
+style D stroke:#FF0000, stroke-width: 3, stroke-dasharray: 4, 4
+
+", width = "800", height = "500")
+```
+-->
+
+<img style="margin-top:-10px;height:500px" src="images/3/today.png" />
+
+## The Reality {.centered}
+
+<img src="https://raw.githubusercontent.com/bbouille/start-spark/master/src/spark-shell-standalone.png" width="100%" />
+<br><br>
+<div class="centered">
+  What's wrong with this picture?
+</div>
+<footer class="source">Source: https://raw.githubusercontent.com/bbouille/start-spark/master/src/spark-shell-standalone.png</footer>
+
+## Our Implementation - DaVinci {.centered}
+
+<img src="images/3/davinci.png" width="100%" />
+
+## Our Implementation - Scatterplot Matrix {.centered}
+
+<img src="images/3/scatterplot.png" width="70%" />
+
+## What Is Spark Job Server?
+
+"[A] RESTful interface for submitting and managing Apache Spark jobs, jars, and job contexts" (https://github.com/spark-jobserver/spark-jobserver)
+<br><br>
+<ol>
+<li>Create a JAR with an object implementing the SparkJob trait
+  <ul>
+    sbt ajaxJob/assembly
+  </ul>
+</li>
+<li>Upload to Spark Job Server
+  <ul>
+    curl --data-binary @ajaxJob.jar jobserver.com:8090/jars/ajaxJob
+  </ul>
+<li>Call it with AJAX
+  <ul>
+    curl --d "input.params = param1 ..."
+    jobserver.com:8090/jobs?appName=ajaxJob?classPath=path.to.object
+  </ul>
+</ol>
+
+
+## Try Our External Version {.centered}
+<img style="padding-top:60px;width:100%" src="images/3/external1.png" />
+
+## Try Our External Version {.centered}
+<img style="padding-top:60px;width:100%" src="images/3/external2.png" />
+
+## Try Our External Version
+
+<ol>
+<li>Clone the repo at https://github.com/spark-jobserver/spark-jobserver</li>
+<li>Setup AWS CLI</li>
+<li>Copy config/user-ec2-settings.sh.template to config/user-ec2-settings.sh and modify to fit your environment</li>
+<li>Run bin/ec2_deploy.sh</li>
+<li>Run bin/ec2_example.sh</li>
+<li>Open the scatterplot matrix in the web browser with the URL printed by the script</li>
+</ol>
+
+## Create Your Own Internal Version
+
+<ol>
+<li>Clone the repo at https://github.com/spark-jobserver/spark-jobserver</li>
+<li>Copy config/local.sh.template to config/internal.sh and modify to fit your environment</li>
+<li>Copy config/local.conf.template to config/internal.conf and modify to fit your environment</li>
+<li>Run bin/server_deploy.sh internal</li>
+</ol>
+
+## {.smallplus}
+The following notes should be read in conjunction with the attached document: 
+
+- Issued by BlackRock Investment Management (UK) Limited, authorised and regulated by the Financial Conduct Authority.  Registered office: 12 Throgmorton Avenue, London, EC2N 2DL.  Tel: 020 7743 3000.  Registered in England No. 2020394.  For your protection telephone calls are usually recorded.  BlackRock is a trading name of BlackRock Investment Management (UK) Limited.
+- Past performance is not a guide to future performance and should not be the sole factor of consideration when selecting a product. All financial investments involve an element of risk. Therefore, the value of your investment and the income from it will vary and your initial investment amount cannot be guaranteed.  Changes in the rates of exchange between currencies may cause the value of investments to go up and down.  Fluctuation may be particularly marked in the case of a higher volatility fund and the value of an investment may fall suddenly and substantially.  Levels and basis of taxation may change from time to time.
+- Mandates we manage may be exposed to finance sector companies, as a service provider or as counterparty for financial contracts.  In recent months, liquidity in the financial markets has become severely restricted, causing a number of firms to withdrawn from the market, or in some extreme cases, becoming insolvent.  This may have an adverse affect on the mandates we manage.
+- Any research in this document has been procured and may have been acted on by BlackRock for its own purpose.  The results of such research are being made available only incidentally.  The views expressed do not constitute investment or any other advice and are subject to change.  They do not necessarily reflect the views of any company in the BlackRock Group or any part thereof and no assurances are made as to their accuracy.
+- This document is for information purposes only and does not constitute an offer or invitation to anyone to invest in any BlackRock funds and has not been prepared in connection with any such offer.
+- This material is for distribution to Professional Clients (as defined by the FCA Rules) and should not be relied upon by any other persons.
+- Subject to the express requirements of any client-specific investment management agreement or provisions relating to the management of a fund, we will not provide notice of any changes to our personnel, structure, policies, process, objectives or, without limitation, any other matter contained in this document.
+- No part of this material may be reproduced, stored in retrieval system or transmitted in any form or by any means, electronic, mechanical, recording or otherwise, without the prior written consent of BlackRock.
+	- UNLESS OTHERWISE SPECIFIED, ALL INFORMATION CONTAINED IN THIS DOCUMENT IS CURRENT AS AT 2015-09-24.
+
